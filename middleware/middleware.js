@@ -27,4 +27,4 @@ export default function middleware(req) {
             return NextResponse.redirect("/admin/login");
         }
     }
-}
+};

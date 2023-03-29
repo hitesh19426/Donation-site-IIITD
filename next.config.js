@@ -1,18 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "via.placeholder.com",
-      },
-      {
-        protocol: "https",
-        hostname: "*.cloudfront.net",
-      },
-    ],
-  },
+module.exports = {
+  env: {
+    MONGO_URI: process.env.MONGO_URI,
+  }
 };
 
-module.exports = nextConfig;
