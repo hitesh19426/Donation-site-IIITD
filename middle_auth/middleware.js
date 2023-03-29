@@ -1,5 +1,4 @@
 import { verify } from "jsonwebtoken"; 
-import { NextResponse } from "next/server";
 
 export default function middleware(req) {
     // if (request.nextUrl.pathname.startsWith('/about')) {
@@ -17,14 +16,14 @@ export default function middleware(req) {
             const verified = verify(jwt, process.env.secret);
             req.user = verified;
             
-            if(req.user.isAdmin){
-                return NextResponse.next();
-            }else{
-                return NextResponse.redirect("/admin/login");
+            if(!verified.isAdmin){
+                return false;
             }
 
+            return true;
+
         } catch (error) {
-            return NextResponse.redirect("/admin/login");
+            return false;
         }
     }
 };

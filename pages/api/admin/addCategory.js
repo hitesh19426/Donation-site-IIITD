@@ -1,13 +1,17 @@
 import dbConnect from "@/utils/dbConnect";
 import category from "@/models/category";
 
-import middleware from "@/middleware/middleware";
+import middleware from "@/middle_auth/middleware";
 
 dbConnect();
 
 export default async (req, res) => {
 
-    // await middleware(req);
+    const auth = await middleware(req);
+
+    if(!auth){
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
     const { method } = req;
 
