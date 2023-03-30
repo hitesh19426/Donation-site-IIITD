@@ -4,14 +4,14 @@ import { Form, Formik, useFormikContext } from "formik";
 import { server } from "@/config/index";
 import Image from "next/image";
 
-function DetailCard({ name, content }) {
+function DetailCard({ name, imageUrl }) {
   return (
     <div className="card mb-5 pb-3">
       <div className="card-header fs-1 fw-normal">
         <b>{name} | IIIT Delhi</b>
       </div>
       <Image
-        src={content.imageUrl}
+        src={imageUrl}
         className="card-img-top"
         alt="topic pic"
         width={500}
@@ -336,11 +336,11 @@ const MyForm = ({ name }) => {
   );
 };
 
-export default function Payment({ name, content }) {
+export default function Payment({ name, imageUrl }) {
   return (
     <div className="container row">
       <div className="col-lg-12 col-xxl-6">
-        <DetailCard name={name} content={content} />
+        <DetailCard name={name} imageUrl={imageUrl} />
       </div>
       <div className="col-lg-12 col-xxl-6">
         <MyForm name={name} />
@@ -350,16 +350,14 @@ export default function Payment({ name, content }) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    `${server}/api/donations/topics/${context.params.topicId}`
-  );
-  const res_json = await res.json();
-  const { name, content } = res_json;
+  const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
+  const {data} = await res.json();
+  const { name, imageUrl } = data;
 
   return {
     props: {
       name,
-      content,
+      imageUrl,
     },
   };
 }

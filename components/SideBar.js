@@ -5,22 +5,22 @@ import NavBar from "./NavBar";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-function GetSideTopics() {
-  const { data, error, isLoading } = useSWR(
-    `${server}/api/donations/topics`,
-    fetcher
-  );
+function GetSideCategories() {
+  const { data, error, isLoading } = useSWR(`/api/category`, fetcher);
+
+  // console.log("data inside useSWR = ", data);
 
   return {
-    topics: data,
+    data,
     isLoading,
     isError: error,
   };
 }
 
 function SideBar() {
-  const { topics, error, isLoading } = GetSideTopics();
-
+  const { data, error, isLoading } = GetSideCategories();
+  // const {topics} = data;
+  
   if (isLoading) {
     return <div> Loading ... </div>;
   }
@@ -29,8 +29,20 @@ function SideBar() {
     return <div> Error fetching side topics </div>;
   }
 
+  const {data: categories} = data;
+  // console.log("data inside sideBar = ", data);
+  // console.log("categories inside sideBar = ", categories);
+
+  if(categories === undefined || categories === null) {
+    return <div> No categories found. Please check your connection and whether the categories exist in database or not.</div>
+  }
+
+  if(categories.length === 0){
+    return <div> No categories found. Please add some categories before proceeding.</div>
+  }
+
   return (
-    <NavBar items={topics} path="donations" />
+    <NavBar items={categories} path="donations" />
   );
 }
 
