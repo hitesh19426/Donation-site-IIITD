@@ -14,7 +14,7 @@ const donationData = new mongoose.Schema({
         required: true,
     },
     amount: {
-        type: Number,
+        type: String,
         required: true,
     },
     address: {
