@@ -3,6 +3,8 @@ import MyTextInput from "@/components/MyTextInput";
 import { Form, Formik, useFormikContext } from "formik";
 import { server } from "@/config/index";
 import Image from "next/image";
+import IIITD_Logo from "@/public/logo.png";
+import Script from "next/script";
 
 function DetailCard({ name, imageUrl }) {
   return (
@@ -253,6 +255,20 @@ const initialValues = {
   remarks: "",
 };
 
+const loadScript = (src) => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = src
+    script.onload = () => {
+      resolve(true)
+    }
+    script.onerror = () => {
+      resolve(false)
+    }
+    document.body.appendChild(script)
+  })
+};
+
 const MyForm = ({ name }) => {
   const handleSubmit = async (values) => {
     console.log("handle submit function called");
@@ -260,13 +276,56 @@ const MyForm = ({ name }) => {
     console.log(name);
   };
 
+  const displayRazorpay = async (values) => {
+    // const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+
+		// if (!res) {
+		// 	alert('Razorpay SDK failed to load. Are you online?')
+		// 	return
+		// }
+
+		// const response = await fetch(`${server}/api/razorpay`, { method: 'POST' })
+    // const {data} = await response.json();
+    // const data = {id: ''}
+
+		// console.log(data)
+    console.log(values);
+    // return;
+
+		const options = {
+			key: process.env.RAZORPAY_KEY_ID,
+			currency: 'INR',
+			amount: (values.amount * 100).toString(),
+			order_id: 'FoF4eKNW9o7HfJ4Q',
+			name: 'Donation',
+			description: 'Thank you for nothing. Please give us some money',
+			handler: function (response) {
+				// alert(response.razorpay_payment_id)
+				// alert(response.razorpay_order_id)
+				// alert(response.razorpay_signature)
+			},
+			prefill: {
+				// name,
+				// email: 'sdfdsjfh2@ndsfdf.com',
+				// phone_number: '9899999999'
+			}
+		}
+
+		const paymentObject = new window.Razorpay(options)
+		paymentObject.open()
+
+    paymentObject.on("payment.failed", function (response) {
+      alert("Payment Failed. PLease try again.")
+    })
+  }
+
   return (
     <div className="card">
       <div className="card-body">
         <Formik
           initialValues={initialValues}
           validate={validator}
-          onSubmit={handleSubmit}
+          onSubmit={displayRazorpay}
         >
           <Form>
             <MyTextInput
@@ -338,20 +397,28 @@ const MyForm = ({ name }) => {
 
 export default function Payment({ name, imageUrl }) {
   return (
-    <div className="container row">
-      <div className="col-lg-12 col-xxl-6">
-        <DetailCard name={name} imageUrl={imageUrl} />
+    <>
+      <Script
+        id="razorpay-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
+      <div className="container row">
+        <div className="col-lg-12 col-xxl-6">
+          <DetailCard name={name} imageUrl={imageUrl} />
+        </div>
+        <div className="col-lg-12 col-xxl-6">
+          <MyForm name={name} />
+        </div>
       </div>
-      <div className="col-lg-12 col-xxl-6">
-        <MyForm name={name} />
-      </div>
-    </div>
+    </>
   );
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
-  const {data} = await res.json();
+  const res = await fetch(
+    `${server}/api/category/${context.params.categoryId}`
+  );
+  const { data } = await res.json();
   const { name, imageUrl } = data;
 
   return {
