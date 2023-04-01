@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { server } from "@/config/index";
 import Image from "next/image";
-import Link from "next/link";
 import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
 import { getSession } from "next-auth/react";
@@ -18,22 +17,19 @@ const validator = (values) => {
   return errors;
 };
 
-const EditCategoryPage = ({ session, name, description, image }) => {
+const EditCategoryPage = ({ session, name, description}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
 
   const handleSubmit = async (values) => {
     console.log("handle submit function called");
-    console.log(values);
-
-    console.log(values.name);
-    console.log(values.description);
+    // console.log(values);
 
     const form = new FormData();
     form.append("name", values.name);
     form.append("description", values.description);
     form.append("imageUrl", selectedFile);
-    console.log(form);
+    // console.log(form);
 
     const result = await fetch(`${server}/api/admin/addCategory`, {
       method: "PUT",
@@ -106,7 +102,7 @@ const EditCategoryPage = ({ session, name, description, image }) => {
   );
 };
 
-export async function getServerProps(context) {
+export async function getServerSideProps({req, params}) {
   const session = await getSession({ req });
   console.log("session in admin page = ", session);
 
@@ -119,18 +115,19 @@ export async function getServerProps(context) {
     };
   }
 
+  console.log(session);
+
   const res = await fetch(
-    `${server}/api/category/${context.params.categoryId}`
+    `${server}/api/category/${params.id}`
   );
-  const { data } = await res.json();
-  console.log(data);
-  const { name, description, imageUrl } = data;
+  const { data: category } = await res.json();
+//   console.log("data = ", category);
+  const { name, description } = category;
 
   return {
     props: {
       name,
       description,
-      imageUrl,
     },
   };
 }

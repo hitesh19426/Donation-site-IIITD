@@ -1,77 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import { server } from "@/config";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
-const Modal = ({title}) => {
-  return (
-    <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Modal title
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">...</div>
-          </div>
-        </div>
-      </div>
-  )
-}
-
-
-const CategoryItem = ({key, category}) => {
+const CategoryItem = ({key, category, setError}) => {
+  const [deleting, setDeleting] = useState(false);
   
-  const onDeleteHandler = (id) => {
+  const onDeleteHandler = async (id) => {
       // const response = await fetch(`${}`)
       console.log('delete function clicked for category', id);
+      try{
+        setDeleting(true);
+        setError(null)
+        const response = await fetch(`${server}/api/admin/categorySpecific`, {
+          method: 'DELETE',
+          body: JSON.stringify({
+            id: id,
+          }),
+        });
+
+        const res = await response.json();
+        console.log(res);
+        setDeleting(false)
+        setError(null)
+      }
+      catch(err){
+        setDeleting(false)
+        setError(err)
+        console.log('error occured', err);
+      }
+      
+      
   }
 
   return (
-    <li className="list-group-item d-flex justify-content-between border-secondary" key={key}>
-      <span className="fw-bold px-3 mr-auto mt-2">{category.name} </span>
-      <div className="">
-        <Link className="btn btn-danger mx-3" href={`admin/editCategory/${category._id}`}>
-          <MdEdit />
-        </Link>
-        <button className="btn btn-danger" onClick={() => onDeleteHandler(category._id)}>
-          <MdDeleteForever />
-        </button>
-      </div>
-    </li>
+    <>
+      <li className="list-group-item d-flex col justify-content-between border-secondary" key={key}>
+        <div className="flex-column col">
+          <div className="d-flex col">
+            <span className="fw-bold col px-3 mr-auto mt-2"> {category.name} </span>
+            <div className="mr-auto">
+              <Link className="btn btn-danger mx-3" href={`admin/editCategory/${category._id}`}>
+                <MdEdit />
+              </Link>
+              <button className="btn btn-danger" onClick={() => onDeleteHandler(category._id)} disabled={deleting} >
+                <MdDeleteForever />
+              </button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </>
   )
 }
 
 const AdminPage = ({session, categories}) => {
+  const [error, setError] = useState(null)
+
   return (
-    <div className="d-grid gap-4 mx-5">
-      
-      <div className="">
+    <div className="d-grid gap-4 mx-5 col">
+      <div className="row">
         <ul className="list-group row">
           {categories.map((category) => (
-            <CategoryItem key={category.id} category={category} />
+            <CategoryItem key={category.id} category={category} setError={setError} />
           ))}
         </ul>
       </div>
 
+      {error && <div className="row fw-bold alert alert-danger">
+        Some Error Occured. Try again.
+      </div>}
+      
 
-      <Link href={`/admin/addCategory`} className="btn btn-success">
-        Add New Category
-      </Link>
+      <div className="row">
+        <Link href={`/admin/addCategory`} className="btn btn-success">
+          Add New Category
+        </Link>
+      </div>
+      
     </div>
   );
 };
