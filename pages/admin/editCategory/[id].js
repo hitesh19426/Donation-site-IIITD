@@ -1,14 +1,11 @@
-import React, {useState} from "react";
-import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { server } from "@/config/index";
+import Image from "next/image";
+import Link from "next/link";
 import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
-import Image from "next/image";
-import { server } from "@/config";
-
-const initialValues = {
-  name: "",
-  description: "",
-};
+import { getSession } from "next-auth/react";
+import { useState } from "react";
 
 const validator = (values) => {
   const errors = {};
@@ -21,8 +18,7 @@ const validator = (values) => {
   return errors;
 };
 
-const AddCategoryPage = ({ session }) => {
-  const [uploading, setUploading] = useState(false);
+const EditCategoryPage = ({ session, name, description, image }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
 
@@ -34,13 +30,13 @@ const AddCategoryPage = ({ session }) => {
     console.log(values.description);
 
     const form = new FormData();
-    form.append('name', values.name);
-    form.append('description', values.description);
-    form.append('imageUrl', selectedFile);
+    form.append("name", values.name);
+    form.append("description", values.description);
+    form.append("imageUrl", selectedFile);
     console.log(form);
 
     const result = await fetch(`${server}/api/admin/addCategory`, {
-      method: 'POST',
+      method: "PUT",
       body: form,
     });
     const res = await result.json();
@@ -50,16 +46,21 @@ const AddCategoryPage = ({ session }) => {
 
   const handleImage = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file)
+    setSelectedFile(file);
     console.log(file);
 
     const fileReader = new FileReader();
     fileReader.onload = (event) => {
       console.log(event.target.result);
       setSelectedImage(event.target.result);
-    }
-    fileReader.readAsDataURL(file)
-  }
+    };
+    fileReader.readAsDataURL(file);
+  };
+
+  const initialValues = {
+    name: name,
+    description: description,
+  };
 
   return (
     <div className="card">
@@ -105,7 +106,7 @@ const AddCategoryPage = ({ session }) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
+export async function getServerProps(context) {
   const session = await getSession({ req });
   console.log("session in admin page = ", session);
 
@@ -118,11 +119,20 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const res = await fetch(
+    `${server}/api/category/${context.params.categoryId}`
+  );
+  const { data } = await res.json();
+  console.log(data);
+  const { name, description, imageUrl } = data;
+
   return {
     props: {
-      session,
+      name,
+      description,
+      imageUrl,
     },
   };
 }
 
-export default AddCategoryPage;
+export default EditCategoryPage;
