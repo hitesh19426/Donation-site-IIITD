@@ -14,8 +14,8 @@ export default async function handler(req, res) {
     });
 
     // Create an order -> generate the OrderID -> Send it to the Front-end
-    const {amount} = req.body;
-    console.log("amount = ", req.body.amount);
+    // const {amount} = req.body;
+    // console.log("amount = ", req.body.amount);
     
     const payment_capture = 1;
     const currency = "INR";

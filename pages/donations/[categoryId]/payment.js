@@ -257,10 +257,27 @@ const initialValues = {
 
 
 const MyForm = ({ name }) => {
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, response) => {
     console.log("handle submit function called");
     console.log(values);
-    console.log(name);
+    console.log(response);
+
+    const donation_data = {...values, ...response};
+    console.log(donation_data);
+
+    try{
+      const response = await fetch(`${server}/api/donation_data`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(donation_data)
+      })
+      const {data} = await response.json()
+      console.log(data);
+    }catch(err){
+      console.log('error occurred: ', err);
+    }
   };
 
   const displayRazorpay = async (values) => {
@@ -272,13 +289,10 @@ const MyForm = ({ name }) => {
         amount: values.amount,
       }),
     });
-    const { id, currency, amount } = await response.json();
-    // const data = {id: ''}
-
-    // console.log(data)
-    console.log("id = ", id);
-    console.log("currency = ", currency);
-    console.log("amount = ", amount);
+    const { id} = await response.json();
+    // console.log("id = ", id);
+    // console.log("currency = ", currency);
+    // console.log("amount = ", amount);
     // return;
 
     const options = {
@@ -290,6 +304,7 @@ const MyForm = ({ name }) => {
       description: "Thank you for nothing. Please give us some money",
       handler: async function (response) {
         console.log("response received from razorpay = ", response);
+        handleSubmit(values, response);
         // alert(response.razorpay_payment_id)
         // alert(response.razorpay_order_id)
         // alert(response.razorpay_signature)
