@@ -28,20 +28,20 @@ export default function CategoryPage({name, imageUrl}) {
   );
 }
 
-export async function getStaticPaths() {
-  const res = await fetch(`${server}/api/category`);
-  const {data: categories} = await res.json();
+// export async function getStaticPaths() {
+//   const res = await fetch(`${server}/api/category`);
+//   const {data: categories} = await res.json();
 
-  const ids = categories.map(category => category.id);
-  const paths = ids.map(id => ({ params: { categoryId: id.toString() } }));
+//   const ids = categories.map(category => category.id);
+//   const paths = ids.map(id => ({ params: { categoryId: id.toString() } }));
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// }
 
-export async function getStaticProps(context) {
+export async function getServerProps(context) {
   const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
   const {data} = await res.json();
   const { name, imageUrl } = data;
@@ -59,7 +59,8 @@ export async function getStaticProps(context) {
   return {
     props: {
       name,
-      imageUrl: image,
+      imageUrl: image, 
     },
+    // revalidate: 3,
   };
 }
