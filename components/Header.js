@@ -60,7 +60,7 @@ export default function Header() {
               <div
                 className="nav-link btn btn-success px-3"
                 aria-current="page"
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: "/" })}
               >
                 Logout
               </div>
