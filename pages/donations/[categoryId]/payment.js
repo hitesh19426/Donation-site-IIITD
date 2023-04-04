@@ -255,19 +255,6 @@ const initialValues = {
   remarks: "",
 };
 
-const loadScript = (src) => {
-  return new Promise((resolve) => {
-    const script = document.createElement('script')
-    script.src = src
-    script.onload = () => {
-      resolve(true)
-    }
-    script.onerror = () => {
-      resolve(false)
-    }
-    document.body.appendChild(script)
-  })
-};
 
 const MyForm = ({ name }) => {
   const handleSubmit = async (values) => {
@@ -277,47 +264,50 @@ const MyForm = ({ name }) => {
   };
 
   const displayRazorpay = async (values) => {
-    // const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
-
-		// if (!res) {
-		// 	alert('Razorpay SDK failed to load. Are you online?')
-		// 	return
-		// }
-
-		// const response = await fetch(`${server}/api/razorpay`, { method: 'POST' })
-    // const {data} = await response.json();
+    console.log("amount in browser = ", values.amount);
+    const response = await fetch(`${server}/api/razorpay`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: values.amount,
+      }),
+    });
+    const { id, currency, amount } = await response.json();
     // const data = {id: ''}
 
-		// console.log(data)
-    console.log(values);
+    // console.log(data)
+    console.log("id = ", id);
+    console.log("currency = ", currency);
+    console.log("amount = ", amount);
     // return;
 
-		const options = {
-			key: process.env.RAZORPAY_KEY_ID,
-			currency: 'INR',
-			amount: (values.amount * 100).toString(),
-			order_id: 'FoF4eKNW9o7HfJ4Q',
-			name: 'Donation',
-			description: 'Thank you for nothing. Please give us some money',
-			handler: function (response) {
-				// alert(response.razorpay_payment_id)
-				// alert(response.razorpay_order_id)
-				// alert(response.razorpay_signature)
-			},
-			prefill: {
-				// name,
-				// email: 'sdfdsjfh2@ndsfdf.com',
-				// phone_number: '9899999999'
-			}
-		}
+    const options = {
+      key: process.env.RAZORPAY_KEY_ID,
+      currency: "INR",
+      amount: (values.amount * 100).toString(),
+      order_id: id,
+      name: "Donation",
+      description: "Thank you for nothing. Please give us some money",
+      handler: async function (response) {
+        console.log("response received from razorpay = ", response);
+        // alert(response.razorpay_payment_id)
+        // alert(response.razorpay_order_id)
+        // alert(response.razorpay_signature)
+      },
+      prefill: {
+        name: values.name,
+        email: values.email,
+        phone_number: values.mobile,
+      },
+    };
 
-		const paymentObject = new window.Razorpay(options)
-		paymentObject.open()
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
 
     paymentObject.on("payment.failed", function (response) {
-      alert("Payment Failed. PLease try again.")
-    })
-  }
+      alert("Payment Failed. PLease try again.");
+    });
+  };
 
   return (
     <div className="card">
