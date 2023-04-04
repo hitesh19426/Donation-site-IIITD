@@ -30,8 +30,6 @@ const CategoryItem = ({key, category, setError}) => {
         setError(err)
         console.log('error occured', err);
       }
-      
-      
   }
 
   return (

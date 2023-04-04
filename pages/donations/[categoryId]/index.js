@@ -46,10 +46,20 @@ export async function getStaticProps(context) {
   const {data} = await res.json();
   const { name, imageUrl } = data;
 
+  const newImage = imageUrl.replaceAll("\\", "/");
+  // console.log("newImage = ", newImage);
+
+  const isImageLocal = newImage.slice(0, 6) === 'public'
+  // console.log(isImageLocal);
+
+  const image = (isImageLocal ? newImage.slice(6) : newImage)
+  // console.log(image);
+
+
   return {
     props: {
       name,
-      imageUrl,
+      imageUrl: image,
     },
   };
 }

@@ -3,7 +3,7 @@ import donation_data from "@/models/donation_data";
 
 dbConnect();
 
-export default async (req, res) => {
+export default handler = async (req, res) => {
     
         const { method } = req;
 
