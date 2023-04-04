@@ -1,21 +1,17 @@
 import dbConnect from "@/utils/dbConnect";
 import category from "@/models/category";
-
-import middleware from "@/middle_auth/middleware";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 dbConnect();
 
 const handler = async (req, res) => {
-    // const auth = await middleware(req);
-
-    // if(!auth){
-    //     return res.status(401).json({ success: false, message: "Unauthorized" });
-    // }
     const session = await getServerSession(req, res, authOptions);
     if(!session)
         return res.status(401).json({ success: false, message: "Unauthorized" })
 
     const { method } = req;
+    console.log('req at api/admin/categogySpecific route');
     if(method === "PUT"){
         try {
             const updated_category = await category.findByIdAndUpdate(req.body.id, {$set: req.body}, {new: true});

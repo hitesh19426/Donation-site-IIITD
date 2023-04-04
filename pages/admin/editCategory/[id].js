@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation';
 import { server } from "@/config/index";
 import Image from "next/image";
 import { Form, Formik } from "formik";
@@ -17,13 +17,13 @@ const validator = (values) => {
   return errors;
 };
 
-const EditCategoryPage = ({ session, name, description}) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+const EditCategoryPage = ({ session, name, description, id }) => {
+  const [selectedImage, setSelectedImage] = useState();
   const [selectedFile, setSelectedFile] = useState();
+  const { push } = useRouter();
 
   const handleSubmit = async (values) => {
     console.log("handle submit function called");
-    // console.log(values);
 
     const form = new FormData();
     form.append("name", values.name);
@@ -31,13 +31,17 @@ const EditCategoryPage = ({ session, name, description}) => {
     form.append("imageUrl", selectedFile);
     // console.log(form);
 
-    const result = await fetch(`${server}/api/admin/addCategory`, {
-      method: "PUT",
-      body: form,
-    });
-    const res = await result.json();
-
-    console.log(res);
+    try{
+      const result = await fetch(`${server}/api/admin/category/${id}`, {
+        method: "PATCH",
+        body: form,
+      });
+      const res = await result.json();
+      console.log(res);
+      push('/admin')
+    }catch(err){
+      console.log('error occured: ', err);
+    }
   };
 
   const handleImage = (event) => {
@@ -82,11 +86,17 @@ const EditCategoryPage = ({ session, name, description}) => {
             />
 
             <div className="col-md-10 ms-5 mt-3 ">
-              <input type="file" className="form-control" onChange={handleImage} />
+              <input
+                type="file"
+                className="form-control"
+                onChange={handleImage}
+              />
             </div>
 
             <div className="col-md-10 ms-5 my-2">
-              {selectedImage && <Image src={selectedImage} alt="" width={300} height={300} />}
+              {selectedImage && (
+                <Image src={selectedImage} alt="" width={300} height={300} />
+              )}
             </div>
 
             {/* TODO: If you have time, then disable button if there are errors */}
@@ -102,7 +112,7 @@ const EditCategoryPage = ({ session, name, description}) => {
   );
 };
 
-export async function getServerSideProps({req, params}) {
+export async function getServerSideProps({ req, params }) {
   const session = await getSession({ req });
   console.log("session in admin page = ", session);
 
@@ -115,19 +125,17 @@ export async function getServerSideProps({req, params}) {
     };
   }
 
-  console.log(session);
+  // console.log(session);
 
-  const res = await fetch(
-    `${server}/api/category/${params.id}`
-  );
+  const res = await fetch(`${server}/api/category/${params.id}`);
   const { data: category } = await res.json();
-//   console.log("data = ", category);
-  const { name, description } = category;
+  const { name, description, id } = category;
 
   return {
     props: {
       name,
       description,
+      id,
     },
   };
 }

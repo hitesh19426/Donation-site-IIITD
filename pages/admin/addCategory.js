@@ -4,6 +4,7 @@ import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
 import Image from "next/image";
 import { server } from "@/config";
+import { useRouter } from 'next/navigation';
 
 const initialValues = {
   name: "",
@@ -25,6 +26,7 @@ const AddCategoryPage = ({ session }) => {
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
+  const { push } = useRouter();
 
   const handleSubmit = async (values) => {
     console.log("handle submit function called");
@@ -39,11 +41,18 @@ const AddCategoryPage = ({ session }) => {
     form.append('imageUrl', selectedFile);
     console.log(form);
 
-    const result = await fetch(`${server}/api/admin/addCategory`, {
-      method: 'POST',
-      body: form,
-    });
-    const res = await result.json();
+    try{
+      const result = await fetch(`${server}/api/admin/addCategory`, {
+        method: 'POST',
+        body: form,
+      });
+      const res = await result.json();
+      console.log(res);
+      push('/admin')
+
+    }catch(err){
+      console.log("error occured: ", err);
+    }
 
     console.log(res);
   };
