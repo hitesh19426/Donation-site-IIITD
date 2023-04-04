@@ -4,7 +4,6 @@ import { serialize } from "cookie";
 
 export default async function handler(req, res) {
     console.log('login request at api/admin/login');
-    // console.log("req = ", req);
 
     if (req.method === 'POST') {
       // Process a POST request

@@ -4,7 +4,6 @@ import Category from "@/models/category";
 dbConnect();
 
 const handler = async (req, res) => {
-
     const { method } = req;
 
     if(method === "GET"){

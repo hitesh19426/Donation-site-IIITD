@@ -5,23 +5,21 @@ import middleware from "@/middle_auth/middleware";
 
 dbConnect();
 
-export default async (req, res) => {
+const handler = async (req, res) => {
+    // const auth = await middleware(req);
 
-    const auth = await middleware(req);
-
-    if(!auth){
-        return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
+    // if(!auth){
+    //     return res.status(401).json({ success: false, message: "Unauthorized" });
+    // }
+    const session = await getServerSession(req, res, authOptions);
+    if(!session)
+        return res.status(401).json({ success: false, message: "Unauthorized" })
 
     const { method } = req;
-
     if(method === "PUT"){
         try {
-            
             const updated_category = await category.findByIdAndUpdate(req.body.id, {$set: req.body}, {new: true});
-
             return res.status(200).json({ success: true, data: updated_category });
-
         } catch (error) {
             return res.status(400).json({ success: false, message: error.message });
         }
@@ -34,3 +32,5 @@ export default async (req, res) => {
         }
     }
 };
+
+export default handler

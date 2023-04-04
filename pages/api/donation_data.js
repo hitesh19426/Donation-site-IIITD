@@ -4,7 +4,6 @@ import donation_data from "@/models/donation_data";
 dbConnect();
 
 export default handler = async (req, res) => {
-    
         const { method } = req;
 
         if(method === "POST"){
