@@ -41,9 +41,10 @@ export default function CategoryPage({name, imageUrl}) {
 //   };
 // }
 
-export async function getServerProps(context) {
+export async function getServerSideProps(context) {
   const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
   const {data} = await res.json();
+  // console.log(data);
   const { name, imageUrl } = data;
 
   const newImage = imageUrl.replaceAll("\\", "/");
@@ -53,7 +54,7 @@ export async function getServerProps(context) {
   // console.log(isImageLocal);
 
   const image = (isImageLocal ? newImage.slice(6) : newImage)
-  // console.log(image);
+  // console.log("image = ", image);
 
 
   return {

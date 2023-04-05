@@ -7,7 +7,9 @@ const handler = async (req, res) => {
   const { id } = req.query;
   const { method } = req;
 
+  console.log(`GET request at /api/category/${req.query.id}`);
   if (method === "GET") {
+    console.log(`GET request at /api/category/${req.query.id}`);
     try {
       const category = await Category.findById(id);
       return res
