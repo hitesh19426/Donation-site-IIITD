@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
-
 function DetailCard({name, imageUrl, categoryId}) {
   return (
     <div className="card mb-3">
@@ -37,6 +36,12 @@ export async function getServerSideProps(context) {
 
   console.log("data = ", data);
   
+  if(!data) {
+    return {
+      notFound: true,
+    }
+  }
+
   const name = data[0].name;
   const imageUrl = data[0].imageUrl;
 

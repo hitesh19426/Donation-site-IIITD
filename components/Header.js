@@ -40,13 +40,13 @@ export default function Header() {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <Link
+            {/* <Link
               className="nav-link me-2 text-secondary"
               aria-current="page"
               href="/"
             >
               Donations
-            </Link>
+            </Link> */}
 
             <Link
               className="nav-link me-2 text-secondary"
