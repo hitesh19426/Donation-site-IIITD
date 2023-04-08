@@ -138,7 +138,7 @@ const PersonCustomFields = () => {
     return (
       <>
         <MyTextInput
-          label="Course Name"
+          label="Course Name (BTech/MTech/PHD)"
           name="course"
           type="text"
           placeholder="BTech"
@@ -148,7 +148,7 @@ const PersonCustomFields = () => {
           label="Roll No"
           name="rollno"
           type="number"
-          placeholder="2019xxx"
+          placeholder="Enter roll no"
         />
       </>
     );
@@ -170,11 +170,11 @@ const PersonCustomFields = () => {
           label="Ward Name"
           name="wardname"
           type="text"
-          placeholder="David Richard"
+          placeholder="Enter your ward name"
         />
 
         <MyTextInput
-          label="Course Name"
+          label="Course Name (BTech/MTech/PHD)"
           name="course"
           type="text"
           placeholder="BTech"
@@ -337,20 +337,20 @@ const MyForm = ({ name }) => {
               label="Name"
               name="name"
               type="text"
-              placeholder="David Richard"
+              placeholder="Your Name"
             />
             <MyTextInput
               label="Email"
               name="email"
               type="email"
-              placeholder="david.richards@gmail.com"
+              placeholder="youremail@gmail.com"
             />
             {/* TODO: Ask if they want this in country code separate format -> should be doable using some library */}
             <MyTextInput
               label="Mobile"
               name="mobile"
               type="text"
-              placeholder="(91) 988-765-NNN"
+              placeholder="000 000 0000"
             />
 
             <MyTextInput
@@ -426,10 +426,14 @@ export async function getServerSideProps(context) {
   const { data } = await res.json();
   const { name, imageUrl } = data;
 
+  const isImageLocal = imageUrl.slice(0, 6) === "public";
+  const newImage = imageUrl.replaceAll("\\", "/");
+  const image = isImageLocal ? newImage.slice(6) : newImage;
+
   return {
     props: {
       name,
-      imageUrl,
+      imageUrl: image,
     },
   };
 }

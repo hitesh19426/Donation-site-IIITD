@@ -28,19 +28,6 @@ export default function CategoryPage({name, imageUrl}) {
   );
 }
 
-// export async function getStaticPaths() {
-//   const res = await fetch(`${server}/api/category`);
-//   const {data: categories} = await res.json();
-
-//   const ids = categories.map(category => category.id);
-//   const paths = ids.map(id => ({ params: { categoryId: id.toString() } }));
-
-//   return {
-//     paths,
-//     fallback: true,
-//   };
-// }
-
 export async function getServerSideProps(context) {
   const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
   const {data} = await res.json();
