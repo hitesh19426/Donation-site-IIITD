@@ -6,9 +6,9 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]"
 dbConnect();
 
 const handler = async (req, res) => {
-    // const session = await getServerSession(req, res, authOptions);
-    // if(!session)
-    //     return res.status(401).json({ success: false, message: "Unauthorized" })
+    const session = await getServerSession(req, res, authOptions);
+    if(!session)
+        return res.status(401).json({ success: false, message: "Unauthorized" })
         
     const { method } = req;
     console.log('req at api/admin/donatins route');
