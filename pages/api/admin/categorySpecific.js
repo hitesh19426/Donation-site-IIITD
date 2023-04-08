@@ -9,7 +9,7 @@ const handler = async (req, res) => {
     const session = await getServerSession(req, res, authOptions);
     if(!session)
         return res.status(401).json({ success: false, message: "Unauthorized" })
-
+        
     const { method } = req;
     console.log('req at api/admin/categogySpecific route');
     if(method === "PUT"){
