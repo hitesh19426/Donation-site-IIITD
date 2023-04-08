@@ -1,13 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import IIITD_Logo from "./../public/logo.png";
 
 export default function Header() {
   const [isNavCollapsed, setIsNavCollapsed] = React.useState(true);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
-  const { data: session } = useSession();
 
   return (
     <nav className="navbar navbar-expand-md">
@@ -47,39 +45,6 @@ export default function Header() {
             >
               Donations
             </Link>
-
-            <Link
-              className="nav-link me-2 text-secondary"
-              aria-current="page"
-              href="/admin"
-            >
-              Admin Page
-            </Link>
-
-            {session ? (
-              <div
-                className="nav-link btn btn-success px-3"
-                aria-current="page"
-                onClick={() => signOut({ callbackUrl: "/" })}
-              >
-                Logout
-              </div>
-            ) : (
-              <div
-                className="nav-link btn btn-success px-3"
-                aria-current="page"
-                onClick={() => signIn()}
-              >
-                Login/Signup
-              </div>
-            )}
-            {/* <div
-              className="nav-link btn btn-success px-3"
-              aria-current="page"
-              onClick={() => signIn()}
-            >
-              Login/Signup
-            </div> */}
           </ul>
         </div>
       </div>
