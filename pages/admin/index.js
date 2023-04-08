@@ -10,6 +10,9 @@ const AdminPage = ({}) => {
       <Link href={`/admin/home`} className="btn btn-success me-3 px-3">
         Home
       </Link>
+      <Link href={`/admin/donations`} className="btn btn-success me-3 px-3">
+        View Donations
+      </Link>
       {session ? (
         <div
           className="btn btn-success px-3"
