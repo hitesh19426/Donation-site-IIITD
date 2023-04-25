@@ -33,7 +33,7 @@ const EditCategoryPage = ({ session, name, description, id }) => {
     // console.log(form);
 
     try{
-      const result = await fetch(`${server}/api/admin/category${id}`, {
+      const result = await fetch(`${server}/api/admin/category/${id}`, {
         method: "PATCH",
         body: form,
       });

@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import styles from "@/styles/Page.module.css";
 
 function Layout({ children }) {
+
   return (
     <>
       <Head>
@@ -35,3 +36,4 @@ function Layout({ children }) {
 }
 
 export default Layout;
+
