@@ -18,6 +18,10 @@ const DonationItem = ({ index, donation }) => {
 };
 
 const ViewDonations = ({ session, donations }) => {
+
+  
+  if(!donations) return <h1> No donations yet </h1>
+
   return (
     <div className="mx-3 table-responsive">
       <table className="table table-success table-striped table-hover">
@@ -61,7 +65,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       session,
-      donations,
+      donations: donations? donations : null,
     },
   };
 }
