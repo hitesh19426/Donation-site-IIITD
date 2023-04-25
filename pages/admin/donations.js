@@ -19,8 +19,8 @@ const DonationItem = ({ index, donation }) => {
 
 const ViewDonations = ({ session, donations }) => {
 
-  
-  if(!donations) return <h1> No donations yet </h1>
+  // console.log("donations = ", donations);
+  // if(!donations) return <h1> No donations yet </h1>
 
   return (
     <div className="mx-3 table-responsive">
@@ -59,8 +59,10 @@ export async function getServerSideProps({ req }) {
   }
 
   const res = await fetch(`${server}/api/admin/donations`);
+  
   const { data: donations } = await res.json();
-  // console.log(donations);
+  // // console.log("donations = ", await res.json());
+  console.log("donations = ", donations);
 
   return {
     props: {

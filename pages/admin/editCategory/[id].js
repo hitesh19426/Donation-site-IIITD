@@ -29,10 +29,11 @@ const EditCategoryPage = ({ session, name, description, id }) => {
     form.append("name", values.name);
     form.append("description", values.description);
     form.append("imageUrl", selectedFile);
+    form.append("id", id);
     // console.log(form);
 
     try{
-      const result = await fetch(`${server}/api/admin/category/${id}`, {
+      const result = await fetch(`${server}/api/admin/category${id}`, {
         method: "PATCH",
         body: form,
       });
@@ -127,17 +128,24 @@ export async function getServerSideProps({ req, params }) {
 
   // console.log(session);
 
-  const res = await fetch(`${server}/api/category/${params.id}`);
-  const { data: category } = await res.json();
-  const { name, description, id } = category;
+  
+  try {      
+    
+    const res = await fetch(`${server}/api/category/${params.id}`);
+    const { data: category } = await res.json();
+    const { name, description, id } = category;  
+    
+    return {
+      props: {
+        name,
+        description,
+        id,
+      },
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
 
-  return {
-    props: {
-      name,
-      description,
-      id,
-    },
-  };
 }
 
 export default EditCategoryPage;
