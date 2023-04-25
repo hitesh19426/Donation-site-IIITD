@@ -20,6 +20,7 @@ const handler = async (req, res) => {
         course: req.body.course ? req.body.course : "",
         rollno: req.body.rollno ? req.body.rollno : "",
         year: req.body.year ? req.body.year : "",
+        category: req.body.category ? req.body.category : "",
         wardname: req.body.wardname ? req.body.wardname : "",
         companyname: req.body.companyname ? req.body.companyname : "",
         razorpay_order_id: req.body.razorpay_order_id,

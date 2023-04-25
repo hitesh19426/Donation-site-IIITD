@@ -21,6 +21,10 @@ const donationData = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String
+    // required: true,
+  },
   personType: {
     type: String,
     required: true,

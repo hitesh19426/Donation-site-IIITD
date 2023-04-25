@@ -245,7 +245,6 @@ const initialValues = {
   persontype: "",
   pancard: "",
   amount: "",
-
   course: "",
   rollno: "",
   year: "",
@@ -258,12 +257,15 @@ const initialValues = {
 
 const MyForm = ({ name }) => {
   const handleSubmit = async (values, response) => {
+    // values.category = name;
     console.log("handle submit function called");
     console.log(values);
     console.log(response);
 
     const donation_data = {...values, ...response};
     console.log(donation_data);
+
+    donation_data.category = name;
 
     try{
       const response = await fetch(`${server}/api/donation_data`, {
@@ -343,7 +345,7 @@ const MyForm = ({ name }) => {
               label="Email"
               name="email"
               type="email"
-              placeholder="youremail@gmail.com"
+              placeholder="youremail"
             />
             {/* TODO: Ask if they want this in country code separate format -> should be doable using some library */}
             <MyTextInput
@@ -420,11 +422,18 @@ export default function Payment({ name, imageUrl }) {
 }
 
 export async function getServerSideProps(context) {
+
   const res = await fetch(
     `${server}/api/category/${context.params.categoryId}`
   );
+
   const { data } = await res.json();
-  const { name, imageUrl } = data;
+  const {name, imageUrl } = data;
+  
+  // const res1 = await fetch(`${server}/api/category/${context.params.categoryId}`);
+  // const { data1 } = await res1.json();
+  // const {title} = data1;
+  
 
   const isImageLocal = imageUrl.slice(0, 6) === "public";
   const newImage = imageUrl.replaceAll("\\", "/");
@@ -434,6 +443,7 @@ export async function getServerSideProps(context) {
     props: {
       name,
       imageUrl: image,
+      // title,
     },
   };
 }
