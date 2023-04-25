@@ -33,7 +33,10 @@ export default function Footer() {
       </section>
 
       <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
-        © 2020 Copyright: IIIT-Delhi. All rights reserved.
+        Developed by <Link href="https://github.com/V15hnu24">Vishnu Vardhan</Link> and <Link href="https://github.com/hitesh19426">Hitesh Garg</Link> @ IIIT-Delhi
+        <hr></hr>
+        {/* <br></br> */}
+        © 2023 Copyright: IIIT-Delhi. All rights reserved.
       </div>
     </footer>
   );
