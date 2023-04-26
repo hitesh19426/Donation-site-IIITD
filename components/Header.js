@@ -43,7 +43,8 @@ export default function Header() {
               aria-current="page"
               href="/"
             >
-              Donations
+              Contact us @ 
+              <a href="mailto:admin-web@iiitd.ac.in">admin-web@iiitd.ac.in</a>
             </Link>
           </ul>
         </div>
