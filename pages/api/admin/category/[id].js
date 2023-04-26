@@ -35,14 +35,18 @@ router
     console.log("file = ", req.file);
     console.log("body = ", req.body);
 
+    const temp = {}
+    
+    if(req.file) temp.imageUrl = req.file.path;
+    if(req.body.name) temp.name = req.body.name;
+    if(req.body.description) temp.description = req.body.description;
+
     try {
+
       const updated_category = await category.findByIdAndUpdate(
         req.query.id,
         {
-          name: req.body.name,
-          imageUrl: req.file.path,
-          description: req.body.description,
-        },
+          $set: temp,},
         { new: true }
       );
 
