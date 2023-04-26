@@ -5,6 +5,11 @@ import MyTextInput from "@/components/MyTextInput";
 import Image from "next/image";
 import { server } from "@/config";
 import { useRouter } from 'next/navigation';
+import AdminLayout from "@/components/AdminLayout";
+
+import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+
+
 
 const initialValues = {
   name: "",
@@ -135,3 +140,16 @@ export async function getServerSideProps({ req }) {
 }
 
 export default AddCategoryPage;
+
+
+AddCategoryPage.getLayout = function getLayout(page) {
+  return (
+    <>
+    <SessionProvider session={page.props.session}>
+      <AdminLayout>
+        {page}  
+      </AdminLayout>
+    </SessionProvider>
+    </>
+  );
+};

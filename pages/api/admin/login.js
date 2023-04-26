@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       // Process a POST request
         const salt = genSaltSync(10);
-        const hash = hashSync("password.admin@WebAdmin", salt);
+        const hash = hashSync(process.env.password, salt);
         
         // console.log(hash);
         const secret = process.env.secret;

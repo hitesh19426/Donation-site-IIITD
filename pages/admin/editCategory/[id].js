@@ -6,6 +6,11 @@ import MyTextInput from "@/components/MyTextInput";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
 
+import AdminLayout from "@/components/AdminLayout";
+
+
+import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+
 const validator = (values) => {
   const errors = {};
   if (!values.name) {
@@ -149,3 +154,18 @@ export async function getServerSideProps({ req, params }) {
 }
 
 export default EditCategoryPage;
+
+
+
+
+EditCategoryPage.getLayout = function getLayout(page) {
+  return (
+    <>
+    <SessionProvider session={page.props.session}>
+      <AdminLayout>
+        {page}  
+      </AdminLayout>
+    </SessionProvider>
+    </>
+  );
+};

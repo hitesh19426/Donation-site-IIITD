@@ -23,8 +23,7 @@ function Layout({ children }) {
             <SideBar />
           </div>
           <div
-            className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}
-          >
+            className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}>
             {children}
           </div>
         </div>

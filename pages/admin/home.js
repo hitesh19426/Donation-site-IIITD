@@ -4,6 +4,10 @@ import Link from "next/link";
 import { server } from "@/config";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
+
+import { signIn, signOut, SessionProvider } from "next-auth/react";
+import AdminLayout from "@/components/AdminLayout";
+
 const CategoryItem = ({ id, category, setError }) => {
   const [deleting, setDeleting] = useState(false);
 
@@ -129,3 +133,17 @@ export async function getServerSideProps({ req }) {
 }
 
 export default AdminPage;
+
+
+
+AdminPage.getLayout = function getLayout(page) {
+  return (
+    <>
+    <SessionProvider session={page.props.session}>
+      
+      <AdminLayout>{page}</AdminLayout>
+        
+    </SessionProvider>
+    </>
+  );
+};

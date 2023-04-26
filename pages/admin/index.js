@@ -1,36 +1,22 @@
 import React, { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
 import Link from "next/link";
+import AdminLayout from "@/components/AdminLayout";
+
 
 const AdminPage = ({}) => {
   const { data: session } = useSession();
 
   return (
-    <div className="d-flex mx-5">
-      <Link href={`/admin/home`} className="btn btn-success me-3 px-3">
-        Home
-      </Link>
-      <Link href={`/admin/donations`} className="btn btn-success me-3 px-3">
-        View Donations
-      </Link>
-      {session ? (
-        <div
-          className="btn btn-success px-3"
-          aria-current="page"
-          onClick={() => signOut({ callbackUrl: "/" })}
-        >
-          Logout
+    <>
+      
+      <section className=" py-3 pt-3 " style={{width: "100%", height: "400px", background: "white"}}>
+        <div className="container-fluid pt-3">
+          <h1 style={{textAlign:"center", fontFamily: "sans", fontSize: "200px"}}>Welcome Admin</h1>
         </div>
-      ) : (
-        <div
-          className="btn btn-success px-3"
-          aria-current="page"
-          onClick={() => signIn()}
-        >
-          Login/Signup
-        </div>
-      )}
-    </div>
+          
+      </section>
+    </>
   );
 };
 
@@ -41,3 +27,16 @@ export async function getServerSideProps({ req }) {
 }
 
 export default AdminPage;
+
+
+AdminPage.getLayout = function getLayout(page) {
+  return (
+    <>
+    <SessionProvider session={page.props.session}>
+      <AdminLayout>
+        {page}  
+        </AdminLayout>
+    </SessionProvider>
+    </>
+  );
+};

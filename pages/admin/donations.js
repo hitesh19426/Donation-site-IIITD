@@ -2,6 +2,10 @@ import React from "react";
 import { getSession } from "next-auth/react";
 import { server } from "@/config";
 
+import AdminLayout from "@/components/AdminLayout";
+
+import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+
 const DonationItem = ({ index, donation }) => {
   return (
     <tr>
@@ -80,3 +84,15 @@ export async function getServerSideProps({ req }) {
 }
 
 export default ViewDonations;
+
+ViewDonations.getLayout = function getLayout(page) {
+  return (
+    <>
+    <SessionProvider session={page.props.session}>
+      <AdminLayout>
+        {page}  
+      </AdminLayout>
+    </SessionProvider>
+    </>
+  );
+};

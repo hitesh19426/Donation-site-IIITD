@@ -5,10 +5,10 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa"
 export default function Footer() {
   return (
     <footer
-      className="text-center text-lg-start text-dark"
-      style={{backgroundColor: "#ECEFF1"}}
+      className="text-center text-lg-start text-dark mb-0"
+      style={{backgroundColor: "#ECEFF1", position: "relative", bottom: "0", width: "100%"}}
     >
-      <section
+      {/* <section
         className="d-flex justify-content-start p-4 text-white"
         style={{backgroundColor: "#21D192"}}
       >
@@ -30,9 +30,9 @@ export default function Footer() {
             <FaLinkedin />
           </Link>
         </div>
-      </section>
+      </section> */}
 
-      <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
+      <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0.8, 1, 0.2)"}}>
         Developed by <Link href="https://github.com/V15hnu24">Vishnu Vardhan</Link> and <Link href="https://github.com/hitesh19426">Hitesh Garg</Link> @ IIIT-Delhi
         <hr></hr>
         {/* <br></br> */}
