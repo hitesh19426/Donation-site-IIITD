@@ -6,12 +6,15 @@ import Image from "next/image";
 import IIITD_Logo from "@/public/logo.png";
 import Script from "next/script";
 
-function DetailCard({ name, imageUrl }) {
+function DetailCard({ name, imageUrl, description }) {
   return (
     <div className="card mb-5 pb-3">
-      <div className="card-header fs-1 fw-normal">
-        <b>{name} | IIIT Delhi</b>
+      <div className=" card-header fs-1 fw-normal">
+        <b>{name} || IIIT Delhi</b>
       </div>
+
+      <div className="p-1">
+
       <Image
         src={imageUrl}
         className="card-img-top"
@@ -19,6 +22,14 @@ function DetailCard({ name, imageUrl }) {
         width={500}
         height={500}
       />
+
+      </div>
+
+      <hr></hr>
+
+      <div className="p-2 pt-1"> {description} </div>
+      
+      
     </div>
   );
 }
@@ -402,7 +413,7 @@ const MyForm = ({ name }) => {
   );
 };
 
-export default function Payment({ name, imageUrl }) {
+export default function Payment({ name, imageUrl, description }) {
   return (
     <>
       <Script
@@ -411,7 +422,7 @@ export default function Payment({ name, imageUrl }) {
       />
       <div className="container row">
         <div className="col-lg-12 col-xxl-6">
-          <DetailCard name={name} imageUrl={imageUrl} />
+          <DetailCard name={name} imageUrl={imageUrl} description={description}/>
         </div>
         <div className="col-lg-12 col-xxl-6">
           <MyForm name={name} />
@@ -428,7 +439,7 @@ export async function getServerSideProps(context) {
   );
 
   const { data } = await res.json();
-  const {name, imageUrl } = data;
+  const {name, imageUrl, description } = data;
   
   // const res1 = await fetch(`${server}/api/category/${context.params.categoryId}`);
   // const { data1 } = await res1.json();
@@ -443,6 +454,7 @@ export async function getServerSideProps(context) {
     props: {
       name,
       imageUrl: image,
+      description
       // title,
     },
   };
