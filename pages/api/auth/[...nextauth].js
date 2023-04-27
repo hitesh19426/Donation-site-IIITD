@@ -1,12 +1,14 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import { server } from "@/config/index";
+import { compare, genSaltSync, hashSync } from "bcrypt";
 
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
+      id: "credentials-login",
       name: "Credentials",
       // `credentials` is used to generate a form on the sign in page.
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
@@ -20,43 +22,28 @@ export const authOptions = {
         // Add logic here to look up the user from the credentials supplied
         const { username, password } = credentials;
 
-        // console.log(credentials);
+        const salt = genSaltSync(10);
+        const hash = hashSync(process.env.password, salt);
+        
+        if (username === "admin") {
+          const isPasswordCorrect = await compare(password, hash);
 
-        const response = await fetch(
-          `${server}/api/admin/login`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              username,
-              password,
-            }),
+          if (isPasswordCorrect) {
+            return {
+              user: { id: "admin", name: "admin", email: "admin@gmail.com" },
+              message: 'login successful',
+            };
+          } else {
+            return null;
           }
-        );
-        // console.log(response);
-
-        const resp = await response.json();
-        // console.log("resp = ", resp);
-
-
-        if (response.ok) {
-          return { user: { id: "", name: "admin", email: "admin@gmail.com" }, message: resp.message};
-        } else {
+        }else{
           return null;
         }
-
-        // if (user) {
-        //   // Any object returned will be saved in `user` property of the JWT
-        //   return user;
-        // } else {
-        //   // If you return null then an error will be displayed advising the user to check their details.
-        //   return null;
-
-        //   // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        // }
       },
     }),
   ],
+  debug: true,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
