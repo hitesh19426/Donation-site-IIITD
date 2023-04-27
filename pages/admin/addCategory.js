@@ -137,7 +137,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      session,
+      session: JSON.parse(JSON.stringify(session)),
     },
   };
 }

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Footer from "./Footer";
 import styles from "@/styles/Page.module.css";
 import Header from "./Header";
+import { useRouter } from 'next/router'
 
 import React, { useState } from "react";
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
@@ -9,6 +10,8 @@ import Link from "next/link";
 
 function AdminLayout({ children }) {
   const { data: session } = useSession();
+  const router = useRouter()
+
   return (
     <>
       <Head>

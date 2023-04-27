@@ -61,13 +61,13 @@ const CategoryItem = ({ id, category, setError }) => {
             <div className="mr-auto">
               <Link
                 className="btn btn-danger mx-3"
-                href={`editCategory/${category._id}`}
+                href={`editCategory/${category.id}`}
               >
                 <MdEdit />
               </Link>
               <button
                 className="btn btn-danger"
-                onClick={() => onDeleteHandler(category._id)}
+                onClick={() => onDeleteHandler(category.id)}
                 disabled={deleting}
               >
                 <MdDeleteForever />
@@ -131,7 +131,7 @@ export async function getServerSideProps({ req, res }) {
     await dbConnect();
     categories = await Category.find();
     categories = categories.map((category) => category.toObject({ getters: true }));
-    // console.log(categories);
+    // console.log("categories inside admin/home = ", categories);
   } catch (error) {
     console.log(error);
   }
@@ -142,8 +142,8 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      session,
-      categories,
+      session: JSON.parse(JSON.stringify(session)),
+      categories: JSON.parse(JSON.stringify(categories)),
     },
   };
 }

@@ -49,7 +49,7 @@ const ViewDonations = ({ session, donations }) => {
         <tbody>
           {donations.map((donation, index) => (
             <DonationItem
-              key={donation._id}
+              key={donation.id}
               index={index}
               donation={donation}
             />
@@ -96,8 +96,8 @@ export async function getServerSideProps({ req, res }) {
   console.log("donations inside getserversideprops = ", donations);
   return {
     props: {
-      session,
-      donations: donations ? donations : [],
+      session: JSON.parse(JSON.stringify(donations)),
+      donations: donations ? JSON.parse(JSON.stringify(donations)) : [],
     },
   };
 }
