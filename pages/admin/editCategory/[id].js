@@ -1,15 +1,20 @@
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { server } from "@/config/index";
 import Image from "next/image";
 import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
+import dbConnect from "@/utils/dbConnect";
+import Category from "@/models/category";
 
 import AdminLayout from "@/components/AdminLayout";
 
-
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+
 
 const validator = (values) => {
   const errors = {};
@@ -37,16 +42,16 @@ const EditCategoryPage = ({ session, name, description, id }) => {
     form.append("id", id);
     // console.log(form);
 
-    try{
+    try {
       const result = await fetch(`${server}/api/admin/category/${id}`, {
         method: "PATCH",
         body: form,
       });
       const res = await result.json();
       console.log(res);
-      push('/admin')
-    }catch(err){
-      console.log('error occured: ', err);
+      push("/admin");
+    } catch (err) {
+      console.log("error occured: ", err);
     }
   };
 
@@ -118,8 +123,8 @@ const EditCategoryPage = ({ session, name, description, id }) => {
   );
 };
 
-export async function getServerSideProps({ req, params }) {
-  const session = await getSession({ req });
+export async function getServerSideProps({ req, res, params }) {
+  const session = await getServerSession(req, res, authOptions);
   console.log("session in admin page = ", session);
 
   if (!session) {
@@ -131,41 +136,36 @@ export async function getServerSideProps({ req, params }) {
     };
   }
 
-  // console.log(session);
-
-  
-  try {      
-    
-    const res = await fetch(`${server}/api/category/${params.id}`);
-    const { data: category } = await res.json();
-    const { name, description, id } = category;  
-    
-    return {
-      props: {
-        name,
-        description,
-        id,
-      },
-    };
+  var category;
+  try {
+    await dbConnect();
+    category = await Category.findById(params.id);
+    category = category.toObject({getters: true});
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
   }
 
+  // const res = await fetch(`${server}/api/category/${params.id}`);
+  // const { data: category } = await res.json();
+  const { name, description, id } = category;
+
+  return {
+    props: {
+      name,
+      description,
+      id,
+    },
+  };
 }
 
 export default EditCategoryPage;
 
-
-
-
 EditCategoryPage.getLayout = function getLayout(page) {
   return (
     <>
-    <SessionProvider session={page.props.session}>
-      <AdminLayout>
-        {page}  
-      </AdminLayout>
-    </SessionProvider>
+      <SessionProvider session={page.props.session}>
+        <AdminLayout>{page}</AdminLayout>
+      </SessionProvider>
     </>
   );
 };

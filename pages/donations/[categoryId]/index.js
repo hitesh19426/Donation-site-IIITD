@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { server } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
+import dbConnect from "@/utils/dbConnect";
+import Category from "@/models/category";
 
 function DetailCard({name, imageUrl, description, categoryId}) {
   return (
@@ -30,20 +32,25 @@ export default function CategoryPage({name, imageUrl, description}) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
-  const {data} = await res.json();
-  // console.log(data);
-  const { name, imageUrl, description } = data;
-
+  
+  var category;
+  try {
+    await dbConnect();
+    category = await Category.findById(context.params.categoryId);
+    category = category.toObject({getters: true})
+    console.log("category = ", category);
+  } catch (error) {
+    console.log(error);
+  }
+  
+  // const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
+  // const {data} = await res.json();
+  // const { name, imageUrl, description } = data;
+  
+  const { name, imageUrl, description } = category;
   const newImage = imageUrl.replaceAll("\\", "/");
-  // console.log("newImage = ", newImage);
-
   const isImageLocal = newImage.slice(0, 6) === 'public'
-  // console.log(isImageLocal);
-
   const image = (isImageLocal ? newImage.slice(6) : newImage)
-  // console.log("image = ", image);
-
 
   return {
     props: {

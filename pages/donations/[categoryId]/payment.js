@@ -3,8 +3,9 @@ import MyTextInput from "@/components/MyTextInput";
 import { Form, Formik, useFormikContext } from "formik";
 import { server } from "@/config/index";
 import Image from "next/image";
-import IIITD_Logo from "@/public/logo.png";
 import Script from "next/script";
+import dbConnect from "@/utils/dbConnect";
+import Category from "@/models/category";
 
 function DetailCard({ name, imageUrl, description }) {
   return (
@@ -279,7 +280,7 @@ const MyForm = ({ name }) => {
     donation_data.category = name;
 
     try{
-      const response = await fetch(`${server}/api/donation_data`, {
+      const response = await fetch(`/api/donation_data`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -295,6 +296,7 @@ const MyForm = ({ name }) => {
 
   const displayRazorpay = async (values) => {
     console.log("amount in browser = ", values.amount);
+    console.log("server = ", server);
     const response = await fetch(`${server}/api/razorpay`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -303,7 +305,7 @@ const MyForm = ({ name }) => {
       }),
     });
     const { id} = await response.json();
-    // console.log("id = ", id);
+    console.log("id = ", id);
     // console.log("currency = ", currency);
     // console.log("amount = ", amount);
     // return;
@@ -434,18 +436,27 @@ export default function Payment({ name, imageUrl, description }) {
 
 export async function getServerSideProps(context) {
 
-  const res = await fetch(
-    `${server}/api/category/${context.params.categoryId}`
-  );
-
-  const { data } = await res.json();
-  const {name, imageUrl, description } = data;
+  var category;
+  try {
+    await dbConnect();
+    category = await Category.findById(context.params.categoryId);
+    console.log("category inside payment page = ", category);
+    // category = await resp.json();
+    category = category.toObject({getters: true})
+    console.log("category = ", category);
+  } catch (error) {
+    console.log(error);
+  }
   
-  // const res1 = await fetch(`${server}/api/category/${context.params.categoryId}`);
-  // const { data1 } = await res1.json();
-  // const {title} = data1;
-  
 
+  // const res = await fetch(
+  //   `${server}/api/category/${context.params.categoryId}`
+  // );
+
+  // const { data } = await res.json();
+  // const {name, imageUrl, description } = data;
+  
+  const {name, imageUrl, description } = category;
   const isImageLocal = imageUrl.slice(0, 6) === "public";
   const newImage = imageUrl.replaceAll("\\", "/");
   const image = isImageLocal ? newImage.slice(6) : newImage;

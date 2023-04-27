@@ -28,7 +28,6 @@ export async function getServerSideProps({ req }) {
 
 export default AdminPage;
 
-
 AdminPage.getLayout = function getLayout(page) {
   return (
     <>

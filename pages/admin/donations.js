@@ -1,17 +1,21 @@
 import React from "react";
 import { getSession } from "next-auth/react";
 import { server } from "@/config";
-
 import AdminLayout from "@/components/AdminLayout";
-
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+import dbConnect from "@/utils/dbConnect";
+import DonationData from "@/models/donation_data";
+
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+
 
 const DonationItem = ({ index, donation }) => {
   return (
     <tr>
-      <th scope="row"> {index+1} </th>
+      <th scope="row"> {index + 1} </th>
       <td> {donation.name} </td>
-      <td>  {donation.email} </td>
+      <td> {donation.email} </td>
       <td> {donation.phone} </td>
       <td> {donation.amount} </td>
       <td> {donation.category} </td>
@@ -23,7 +27,6 @@ const DonationItem = ({ index, donation }) => {
 };
 
 const ViewDonations = ({ session, donations }) => {
-
   // console.log("donations = ", donations);
   // if(!donations) return <h1> No donations yet </h1>
 
@@ -44,16 +47,22 @@ const ViewDonations = ({ session, donations }) => {
           </tr>
         </thead>
         <tbody>
-          {donations.map((donation, index) => <DonationItem key={donation._id} index={index} donation={donation} />)}
+          {donations.map((donation, index) => (
+            <DonationItem
+              key={donation._id}
+              index={index}
+              donation={donation}
+            />
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
 
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
-  console.log("session in admin page = ", session);
+export async function getServerSideProps({ req, res }) {
+  const session = await getServerSession(req, res, authOptions);
+  console.log("session in admin donations page = ", session);
 
   if (!session) {
     return {
@@ -64,21 +73,31 @@ export async function getServerSideProps({ req }) {
     };
   }
 
-  const res = await fetch(`${server}/api/admin/donations`, {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: req.headers.cookie,
-    }
-  });
-  
-  const { data: donations } = await res.json();
+  var donations;
+  try {
+    await dbConnect();
+    donations = await DonationData.find();
+    donations = donations.map(donation => donation.toObject({getters: true}))
+    // console.log("donations", donations);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // const res = await fetch(`${server}/api/admin/donations`, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Cookie: req.headers.cookie,
+  //   },
+  // });
+
+  // const { data: donations } = await res.json();
   // // console.log("donations = ", await res.json());
-  console.log("donations = ", donations);
+  console.log("donations inside getserversideprops = ", donations);
   return {
     props: {
       session,
-      donations: donations? donations : null,
+      donations: donations ? donations : [],
     },
   };
 }
@@ -88,11 +107,9 @@ export default ViewDonations;
 ViewDonations.getLayout = function getLayout(page) {
   return (
     <>
-    <SessionProvider session={page.props.session}>
-      <AdminLayout>
-        {page}  
-      </AdminLayout>
-    </SessionProvider>
+      <SessionProvider session={page.props.session}>
+        <AdminLayout>{page}</AdminLayout>
+      </SessionProvider>
     </>
   );
 };

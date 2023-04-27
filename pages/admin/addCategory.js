@@ -9,6 +9,9 @@ import AdminLayout from "@/components/AdminLayout";
 
 import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
 
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+
 
 
 const initialValues = {
@@ -119,8 +122,8 @@ const AddCategoryPage = ({ session }) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+export async function getServerSideProps({ req, res }) {
+  const session = await getServerSession(req, res, authOptions);
   console.log("session in admin page = ", session);
 
   if (!session) {
@@ -140,7 +143,6 @@ export async function getServerSideProps({ req }) {
 }
 
 export default AddCategoryPage;
-
 
 AddCategoryPage.getLayout = function getLayout(page) {
   return (

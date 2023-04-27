@@ -4,6 +4,12 @@ import Link from "next/link";
 import { server } from "@/config";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+
+
+import dbConnect from "@/utils/dbConnect";
+import Category from "@/models/category";
 
 import { signIn, signOut, SessionProvider } from "next-auth/react";
 import AdminLayout from "@/components/AdminLayout";
@@ -34,7 +40,6 @@ const CategoryItem = ({ id, category, setError }) => {
       } else {
         console.log("error occured");
       }
-
     } catch (err) {
       setDeleting(false);
       setError(err);
@@ -84,7 +89,7 @@ const AdminPage = ({ session, categories }) => {
         <ul className="list-group row">
           {categories.map((category) => (
             <CategoryItem
-              key = {category.id}
+              key={category.id}
               id={category.id}
               category={category}
               setError={setError}
@@ -108,8 +113,8 @@ const AdminPage = ({ session, categories }) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+export async function getServerSideProps({ req, res }) {
+  const session = await getServerSession(req, res, authOptions);
   console.log("session in admin page = ", session);
 
   if (!session) {
@@ -121,8 +126,19 @@ export async function getServerSideProps({ req }) {
     };
   }
 
-  const res = await fetch(`${server}/api/category`);
-  const { data: categories } = await res.json();
+  var categories;
+  try {
+    await dbConnect();
+    categories = await Category.find();
+    categories = categories.map((category) => category.toObject({ getters: true }));
+    // console.log(categories);
+  } catch (error) {
+    console.log(error);
+  }
+
+  console.log("categories inside getserversideprops = ", categories);
+  // const res = await fetch(`${server}/api/category`);
+  // const { data: categories } = await res.json();
 
   return {
     props: {
@@ -134,16 +150,12 @@ export async function getServerSideProps({ req }) {
 
 export default AdminPage;
 
-
-
 AdminPage.getLayout = function getLayout(page) {
   return (
     <>
-    <SessionProvider session={page.props.session}>
-      
-      <AdminLayout>{page}</AdminLayout>
-        
-    </SessionProvider>
+      <SessionProvider session={page.props.session}>
+        <AdminLayout>{page}</AdminLayout>
+      </SessionProvider>
     </>
   );
 };

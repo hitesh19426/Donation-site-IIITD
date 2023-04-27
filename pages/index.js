@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "@/styles/HoverCard.module.css";
+import dbConnect from "@/utils/dbConnect";
+import Category from "@/models/category";
 
 function CategoryCard({ name, imageUrl, categoryId }) {
   return (
@@ -43,8 +45,20 @@ export default function CategoryPage({ categories }) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${server}/api/category`);
-  const { data: categories } = await res.json();
+  
+  var categories;
+  try {
+    await dbConnect();
+    categories = await Category.find();
+    categories = categories.map(category => category.toObject({getters: true}))
+    // console.log(categories);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // const res = await fetch(`${server}/api/category`);
+  // const { data: categories } = await res.json();
+  console.log("categories inside getserversideprops = ", categories);
 
   categories.map((category) => {
     const isImageLocal = category.imageUrl.slice(0, 6) === "public";
