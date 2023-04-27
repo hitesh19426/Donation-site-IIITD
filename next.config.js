@@ -13,6 +13,10 @@ module.exports = {
         protocol: "https",
         hostname: "*.cloudfront.net",
       },
+      {
+        protocol: "https",
+        hostname: "my-fundingapplication-uss.s3.ap-south-1.amazonaws.com"
+      }
     ],
   },
 };
