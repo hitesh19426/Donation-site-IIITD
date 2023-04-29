@@ -5,6 +5,8 @@ import { createRouter } from "next-connect";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
+import { Uplaod } from "@/s3";
+
 dbConnect();
 
 export const config = {
@@ -34,11 +36,17 @@ router.use(upload.single("imageUrl")).post(async (req, res, next) => {
   console.log("file = ", req.file);
   console.log("body = ", req.body);
 
+  console.log("file name:" + req.file.filename);
+
+  const s3Upload = await Uplaod(req.file);
+
+  console.log("s3Upload = ", s3Upload);
+
   if (method === "POST") {
     try {
       const new_category = await category({
         name: req.body.name,
-        imageUrl: req.file.path,
+        imageUrl: s3Upload.Location,
         description: req.body.description,
       });
 
