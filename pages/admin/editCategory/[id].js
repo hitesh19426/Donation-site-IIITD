@@ -51,6 +51,7 @@ const EditCategoryPage = ({ session, name, description, id }) => {
       console.log(res);
       push("/admin");
     } catch (err) {
+      window.alert("Error occured" + err.message);
       console.log("error occured: ", err);
     }
   };
