@@ -42,21 +42,19 @@ router.use(upload.single("imageUrl")).post(async (req, res, next) => {
 
   console.log("s3Upload = ", s3Upload);
 
-  if (method === "POST") {
-    try {
-      const new_category = await category({
-        name: req.body.name,
-        imageUrl: s3Upload.Location,
-        description: req.body.description,
-      });
+  try {
+    const new_category = await category({
+      name: req.body.name,
+      imageUrl: s3Upload.Location,
+      description: req.body.description,
+    });
 
-      await new_category.save();
-      return res.status(201).json({ success: true, data: new_category });
-    } catch (error) {
-      return res.status(400).json({ success: false, message: error.message });
-    }
+    await new_category.save();
+    return res.status(201).json({ success: true, data: new_category });
+  } catch (error) {
+    return res.status(400).json({ success: false, message: error.message });
   }
-
+  
   //   return res.status(201).json({ body: req.body, file: req.file });
 });
 

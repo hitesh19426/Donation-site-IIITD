@@ -23,7 +23,7 @@ const CategoryItem = ({ id, category, setError }) => {
     try {
       setDeleting(true);
       setError(null);
-      const response = await fetch(`${server}api/admin/category/${id}`, {
+      const response = await fetch(`${server}/api/admin/category/${id}`, {
         method: "DELETE",
       });
 
