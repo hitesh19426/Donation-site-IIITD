@@ -1,14 +1,10 @@
 import React from "react";
-import { getSession } from "next-auth/react";
-import { server } from "@/config";
 import AdminLayout from "@/components/AdminLayout";
-import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import dbConnect from "@/utils/dbConnect";
 import DonationData from "@/models/donation_data";
-
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-
 
 const DonationItem = ({ index, donation }) => {
   return (
@@ -26,10 +22,7 @@ const DonationItem = ({ index, donation }) => {
   );
 };
 
-const ViewDonations = ({ session, donations }) => {
-  // console.log("donations = ", donations);
-  // if(!donations) return <h1> No donations yet </h1>
-
+const ViewDonations = ({donations }) => {
   return (
     <div className="mx-3 table-responsive">
       <table className="table table-success table-striped table-hover">
@@ -62,7 +55,7 @@ const ViewDonations = ({ session, donations }) => {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  console.log("session in admin donations page = ", session);
+  // console.log("session in admin donations page = ", session);
 
   if (!session) {
     return {
@@ -83,17 +76,7 @@ export async function getServerSideProps({ req, res }) {
     console.log(error);
   }
 
-  // const res = await fetch(`${server}/api/admin/donations`, {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Cookie: req.headers.cookie,
-  //   },
-  // });
-
-  // const { data: donations } = await res.json();
-  // // console.log("donations = ", await res.json());
-  console.log("donations inside getserversideprops = ", donations);
+  // console.log("donations inside getserversideprops = ", donations);
   return {
     props: {
       session: JSON.parse(JSON.stringify(donations)),

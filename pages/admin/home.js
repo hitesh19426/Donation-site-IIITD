@@ -1,25 +1,19 @@
 import React, { useState } from "react";
-import { useSession, getSession } from "next-auth/react";
 import Link from "next/link";
 import { server } from "@/config";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
-
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-
-
 import dbConnect from "@/utils/dbConnect";
 import Category from "@/models/category";
-
-import { signIn, signOut, SessionProvider } from "next-auth/react";
+import {SessionProvider } from "next-auth/react";
 import AdminLayout from "@/components/AdminLayout";
 
 const CategoryItem = ({ id, category, setError }) => {
   const [deleting, setDeleting] = useState(false);
 
   const onDeleteHandler = async (id) => {
-    // const response = await fetch(`${}`)
-    console.log("delete function clicked for category", id);
+    // console.log("delete function clicked for category", id);
     try {
       setDeleting(true);
       setError(null);
@@ -28,7 +22,7 @@ const CategoryItem = ({ id, category, setError }) => {
       });
 
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       setDeleting(false);
       setError(null);
 
@@ -36,14 +30,14 @@ const CategoryItem = ({ id, category, setError }) => {
         alert("category deleted successfully");
         // Refresh the page
         window.location.reload();
-        console.log("category deleted successfully");
+        // console.log("category deleted successfully");
       } else {
         console.log("error occured");
       }
     } catch (err) {
       setDeleting(false);
       setError(err);
-      console.log("error occured", err);
+      // console.log("error occured", err);
     }
   };
 
@@ -80,7 +74,7 @@ const CategoryItem = ({ id, category, setError }) => {
   );
 };
 
-const AdminPage = ({ session, categories }) => {
+const AdminPage = ({ categories }) => {
   const [error, setError] = useState(null);
 
   return (
@@ -115,7 +109,7 @@ const AdminPage = ({ session, categories }) => {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  console.log("session in admin page = ", session);
+  // console.log("session in admin page = ", session);
 
   if (!session) {
     return {
@@ -136,7 +130,7 @@ export async function getServerSideProps({ req, res }) {
     console.log(error);
   }
 
-  console.log("categories inside getserversideprops = ", categories);
+  // console.log("categories inside getserversideprops = ", categories);
   // const res = await fetch(`${server}/api/category`);
   // const { data: categories } = await res.json();
 

@@ -2,8 +2,8 @@ import dbConnect from "@/utils/dbConnect";
 import category from "@/models/category";
 import multer from "multer";
 import { createRouter } from "next-connect";
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Uplaod } from "@/s3";
 
 dbConnect();
@@ -27,10 +27,8 @@ const router = createRouter();
 
 router.use(upload.single("imageUrl")).post(async (req, res, next) => {
   const session = await getServerSession(req, res, authOptions);
-  if(!session)
-    return res.status(401).json({ success: false, message: "Unauthorized" })
-  
-  const { method } = req;
+  if (!session)
+    return res.status(401).json({ success: false, message: "Unauthorized" });
 
   console.log("file = ", req.file);
   console.log("body = ", req.body);
@@ -53,7 +51,7 @@ router.use(upload.single("imageUrl")).post(async (req, res, next) => {
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
   }
-  
+
   //   return res.status(201).json({ body: req.body, file: req.file });
 });
 

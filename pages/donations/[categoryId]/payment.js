@@ -15,22 +15,18 @@ function DetailCard({ name, imageUrl, description }) {
       </div>
 
       <div className="p-1">
-
-      <Image
-        src={imageUrl}
-        className="card-img-top"
-        alt="topic pic"
-        width={500}
-        height={500}
-      />
-
+        <Image
+          src={imageUrl}
+          className="card-img-top"
+          alt="topic pic"
+          width={500}
+          height={500}
+        />
       </div>
 
       <hr></hr>
 
       <div className="p-2 pt-1"> {description} </div>
-      
-      
     </div>
   );
 }
@@ -135,14 +131,11 @@ const validator = (values) => {
   }
 
   const allerrors = { ...commonErrors, ...specificErrors };
-  // console.log("allerrors = ", allerrors);
-
   return allerrors;
 };
 
 const PersonCustomFields = () => {
   const { values } = useFormikContext();
-  // console.log(values);
 
   if (values.persontype === "") {
     return <></>;
@@ -266,37 +259,35 @@ const initialValues = {
   remarks: "",
 };
 
-
 const MyForm = ({ name }) => {
   const handleSubmit = async (values, response) => {
-    // values.category = name;
-    console.log("handle submit function called");
-    console.log(values);
-    console.log(response);
+    // console.log("handle submit function called");
+    // console.log(values);
+    // console.log(response);
 
-    const donation_data = {...values, ...response};
-    console.log(donation_data);
+    const donation_data = { ...values, ...response };
+    // console.log(donation_data);
 
     donation_data.category = name;
 
-    try{
+    try {
       const response = await fetch(`/api/donation_data`, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(donation_data)
-      })
-      const {data} = await response.json()
-      console.log(data);
-    }catch(err){
-      console.log('error occurred: ', err);
+        body: JSON.stringify(donation_data),
+      });
+      const { data } = await response.json();
+      // console.log(data);
+    } catch (err) {
+      console.log("error occurred: ", err);
     }
   };
 
   const displayRazorpay = async (values) => {
-    console.log("amount in browser = ", values.amount);
-    console.log("server = ", server);
+    // console.log("amount in browser = ", values.amount);
+    // console.log("server = ", server);
     const response = await fetch(`${server}/api/razorpay`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -304,8 +295,8 @@ const MyForm = ({ name }) => {
         amount: values.amount,
       }),
     });
-    const { id} = await response.json();
-    console.log("id = ", id);
+    const { id } = await response.json();
+    // console.log("id = ", id);
     // console.log("currency = ", currency);
     // console.log("amount = ", amount);
     // return;
@@ -320,9 +311,6 @@ const MyForm = ({ name }) => {
       handler: async function (response) {
         console.log("response received from razorpay = ", response);
         handleSubmit(values, response);
-        // alert(response.razorpay_payment_id)
-        // alert(response.razorpay_order_id)
-        // alert(response.razorpay_signature)
       },
       prefill: {
         name: values.name,
@@ -424,7 +412,11 @@ export default function Payment({ name, imageUrl, description }) {
       />
       <div className="container row">
         <div className="col-lg-12 col-xxl-6">
-          <DetailCard name={name} imageUrl={imageUrl} description={description}/>
+          <DetailCard
+            name={name}
+            imageUrl={imageUrl}
+            description={description}
+          />
         </div>
         <div className="col-lg-12 col-xxl-6">
           <MyForm name={name} />
@@ -435,37 +427,23 @@ export default function Payment({ name, imageUrl, description }) {
 }
 
 export async function getServerSideProps(context) {
-
   var category;
   try {
     await dbConnect();
     category = await Category.findById(context.params.categoryId);
-    console.log("category inside payment page = ", category);
-    // category = await resp.json();
-    category = category.toObject({getters: true})
-    console.log("category = ", category);
+    category = category.toObject({ getters: true });
+    // console.log("category = ", category);
   } catch (error) {
     console.log(error);
   }
-  
 
-  // const res = await fetch(
-  //   `${server}/api/category/${context.params.categoryId}`
-  // );
-
-  // const { data } = await res.json();
-  // const {name, imageUrl, description } = data;
-  
-  const {name, imageUrl, description } = category;
-  const isImageLocal = imageUrl.slice(0, 6) === "public";
-  const newImage = imageUrl.replaceAll("\\", "/");
-  const image = isImageLocal ? newImage.slice(6) : newImage;
+  const { name, imageUrl, description } = category;
 
   return {
     props: {
       name,
-      imageUrl: image,
-      description
+      imageUrl: imageUrl,
+      description,
       // title,
     },
   };

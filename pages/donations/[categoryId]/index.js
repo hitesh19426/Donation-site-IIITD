@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { server } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
 import dbConnect from "@/utils/dbConnect";
@@ -43,19 +42,12 @@ export async function getServerSideProps(context) {
     console.log(error);
   }
   
-  // const res = await fetch(`${server}/api/category/${context.params.categoryId}`);
-  // const {data} = await res.json();
-  // const { name, imageUrl, description } = data;
-  
   const { name, imageUrl, description } = category;
-  const newImage = imageUrl.replaceAll("\\", "/");
-  const isImageLocal = newImage.slice(0, 6) === 'public'
-  const image = (isImageLocal ? newImage.slice(6) : newImage)
-
+  
   return {
     props: {
       name,
-      imageUrl: image, 
+      imageUrl: imageUrl, 
       description,
     },
     // revalidate: 3,

@@ -2,7 +2,6 @@ import dbConnect from "@/utils/dbConnect";
 import DonationData from "@/models/donation_data";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-import middleware from "@/middle_auth/middleware";
 
 dbConnect();
 
