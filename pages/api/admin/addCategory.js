@@ -4,7 +4,6 @@ import multer from "multer";
 import { createRouter } from "next-connect";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-
 import { Uplaod } from "@/s3";
 
 dbConnect();

@@ -1,5 +1,6 @@
 import dbConnect from "@/utils/dbConnect";
 import category from "@/models/category";
+import multer from "multer";
 import { createRouter } from "next-connect";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
@@ -12,9 +13,19 @@ export const config = {
   },
 };
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: null,
+    filename: function (req, file, callback) {
+      callback(null, new Date().getTime() + "-" + file.originalname);
+    },
+  }),
+});
+
 const router = createRouter();
 
 router
+  .use(upload.single("imageUrl"))
   .patch(async (req, res, next) => {
     console.log(`patch request at api/admin/category/${req.query.id}`);
     const session = await getServerSession(req, res, authOptions);
@@ -24,18 +35,18 @@ router
     console.log("file = ", req.file);
     console.log("body = ", req.body);
 
-    const temp = {};
-
-    if (req.file) temp.imageUrl = req.file.path;
-    if (req.body.name) temp.name = req.body.name;
-    if (req.body.description) temp.description = req.body.description;
+    const temp = {}
+    
+    if(req.file) temp.imageUrl = req.file.path;
+    if(req.body.name) temp.name = req.body.name;
+    if(req.body.description) temp.description = req.body.description;
 
     try {
+
       const updated_category = await category.findByIdAndUpdate(
         req.query.id,
         {
-          $set: temp,
-        },
+          $set: temp,},
         { new: true }
       );
 
