@@ -59,7 +59,6 @@ const AddCategoryPage = ({ session }) => {
       push('/admin')
 
     }catch(err){
-      window.alert("Error occured" + err.message);
       console.log("error occured: ", err);
     }
 
@@ -92,7 +91,7 @@ const AddCategoryPage = ({ session }) => {
               label="Category Name"
               name="name"
               type="text"
-              placeholder="Give for Alumni Legacy"
+              placeholder="Enter Name of the category"
             />
 
             <MyTextInput

@@ -30,17 +30,16 @@ router.use(upload.single("imageUrl")).post(async (req, res, next) => {
   const session = await getServerSession(req, res, authOptions);
   if(!session)
     return res.status(401).json({ success: false, message: "Unauthorized" })
-  
+ 
   const { method } = req;
 
   console.log("file = ", req.file);
   console.log("body = ", req.body);
-
   console.log("file name:" + req.file.filename);
 
   const s3Upload = await Uplaod(req.file);
-
   console.log("s3Upload = ", s3Upload);
+
 
   if (method === "POST") {
     try {
@@ -56,7 +55,6 @@ router.use(upload.single("imageUrl")).post(async (req, res, next) => {
       return res.status(400).json({ success: false, message: error.message });
     }
   }
-
   //   return res.status(201).json({ body: req.body, file: req.file });
 });
 

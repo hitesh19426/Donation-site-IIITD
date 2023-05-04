@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer
       className="text-center text-lg-start text-dark mb-0"
-      style={{backgroundColor: "#ECEFF1", position: "relative", bottom: "0", width: "100%"}}
+      style={{backgroundColor: "#ECEFF1", position: "sticky", bottom: "0", width: "100%"}}
     >
       {/* <section
         className="d-flex justify-content-start p-4 text-white"

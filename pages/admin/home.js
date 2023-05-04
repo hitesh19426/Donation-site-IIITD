@@ -33,11 +33,12 @@ const CategoryItem = ({ id, category, setError }) => {
       setError(null);
 
       if (res.success) {
-        alert("category deleted successfully");
+        window.alert("category deleted successfully");
         // Refresh the page
         window.location.reload();
         console.log("category deleted successfully");
       } else {
+        window.alert("Error deleting category" + res.message);
         console.log("error occured");
       }
     } catch (err) {
