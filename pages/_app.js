@@ -1,6 +1,6 @@
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import "styles/globals.css"
 import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import {SessionProvider} from 'next-auth/react'
