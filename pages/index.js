@@ -6,7 +6,7 @@ import Category from "@/models/category";
 
 function CategoryCard({ name, imageUrl, categoryId }) {
   return (
-    <div className="col">
+    <div className="col pb-4">
       <div className={`card ${styles.cardhover}`}>
         <div className="card-header">{name}</div>
         <Image
