@@ -1,18 +1,13 @@
 import React, {useState} from "react";
-import { getSession } from "next-auth/react";
 import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
 import Image from "next/image";
 import { server } from "@/config";
 import { useRouter } from 'next/navigation';
 import AdminLayout from "@/components/AdminLayout";
-
-import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
-
+import { SessionProvider } from "next-auth/react";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-
-
 
 const initialValues = {
   name: "",
@@ -30,24 +25,23 @@ const validator = (values) => {
   return errors;
 };
 
-const AddCategoryPage = ({ session }) => {
-  const [uploading, setUploading] = useState(false);
+const AddCategoryPage = ({ }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
   const { push } = useRouter();
 
   const handleSubmit = async (values) => {
-    console.log("handle submit function called");
-    console.log(values);
+    // console.log("handle submit function called");
+    // console.log(values);
 
-    console.log(values.name);
-    console.log(values.description);
+    // console.log(values.name);
+    // console.log(values.description);
 
     const form = new FormData();
     form.append('name', values.name);
     form.append('description', values.description);
     form.append('imageUrl', selectedFile);
-    console.log(form);
+    // console.log(form);
 
     try{
       const result = await fetch(`${server}/api/admin/addCategory`, {
@@ -55,24 +49,25 @@ const AddCategoryPage = ({ session }) => {
         body: form,
       });
       const res = await result.json();
-      console.log(res);
+      // console.log(res);
       push('/admin')
 
     }catch(err){
-      console.log("error occured: ", err);
+      window.alert("Error occured" + err.message);
+      // console.log("error occured: ", err);
     }
 
-    console.log(res);
+    // console.log(res);
   };
 
   const handleImage = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file)
-    console.log(file);
+    // console.log(file);
 
     const fileReader = new FileReader();
     fileReader.onload = (event) => {
-      console.log(event.target.result);
+      // console.log(event.target.result);
       setSelectedImage(event.target.result);
     }
     fileReader.readAsDataURL(file)
@@ -124,7 +119,7 @@ const AddCategoryPage = ({ session }) => {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  console.log("session in admin page = ", session);
+  // console.log("session in admin page = ", session);
 
   if (!session) {
     return {

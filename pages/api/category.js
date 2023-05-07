@@ -3,7 +3,6 @@ import Category from "@/models/category";
 
 dbConnect();
 
-
 // get all categories
 const handler = async (req, res) => {
     const { method } = req;

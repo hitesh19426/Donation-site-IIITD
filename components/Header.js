@@ -38,10 +38,8 @@ export default function Header() {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-          
-            Contact us @ &nbsp; 
+            Contact us @ &nbsp;
             <a href="mailto:admin-web@iiitd.ac.in">admin-web@iiitd.ac.in</a>
-          
           </ul>
         </div>
       </div>

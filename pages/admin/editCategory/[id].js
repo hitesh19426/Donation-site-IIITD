@@ -3,18 +3,13 @@ import { server } from "@/config/index";
 import Image from "next/image";
 import { Form, Formik } from "formik";
 import MyTextInput from "@/components/MyTextInput";
-import { getSession } from "next-auth/react";
 import { useState } from "react";
 import dbConnect from "@/utils/dbConnect";
 import Category from "@/models/category";
-
 import AdminLayout from "@/components/AdminLayout";
-
-import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
-
+import { SessionProvider } from "next-auth/react";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-
 
 const validator = (values) => {
   const errors = {};
@@ -27,13 +22,13 @@ const validator = (values) => {
   return errors;
 };
 
-const EditCategoryPage = ({ session, name, description, id }) => {
+const EditCategoryPage = ({ name, description, id }) => {
   const [selectedImage, setSelectedImage] = useState();
   const [selectedFile, setSelectedFile] = useState();
   const { push } = useRouter();
 
   const handleSubmit = async (values) => {
-    console.log("handle submit function called");
+    // console.log("handle submit function called");
 
     const form = new FormData();
     form.append("name", values.name);
@@ -48,18 +43,18 @@ const EditCategoryPage = ({ session, name, description, id }) => {
         body: form,
       });
       const res = await result.json();
-      console.log(res);
+      // console.log(res);
       push("/admin");
     } catch (err) {
       window.alert("Error occured" + err.message);
-      console.log("error occured: ", err);
+      // console.log("error occured: ", err);
     }
   };
 
   const handleImage = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    console.log(file);
+    // console.log(file);
 
     const fileReader = new FileReader();
     fileReader.onload = (event) => {
@@ -146,8 +141,6 @@ export async function getServerSideProps({ req, res, params }) {
     console.log(error);
   }
 
-  // const res = await fetch(`${server}/api/category/${params.id}`);
-  // const { data: category } = await res.json();
   const { name, description, id } = category;
 
   return {

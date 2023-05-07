@@ -1,5 +1,3 @@
-// const Razorpay = require("razorpay");
-// const shortid = require("shortid");
 import Razorpay from "razorpay";
 import shortid from "shortid";
 

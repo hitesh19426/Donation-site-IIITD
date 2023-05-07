@@ -1,6 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
-import { server } from "@/config/index";
 import { compare, genSaltSync, hashSync } from "bcrypt";
 
 export const authOptions = {

@@ -5,7 +5,6 @@ import SideBar from "./SideBar";
 import styles from "@/styles/Page.module.css";
 
 function Layout({ children }) {
-
   return (
     <>
       <div className="container-fluid" style={{minHeight: "100%", position:"relative"}}>
@@ -24,7 +23,8 @@ function Layout({ children }) {
             <SideBar />
           </div>
           <div
-            className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}>
+            className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}
+          >
             {children}
           </div>
         </div>
@@ -39,4 +39,3 @@ function Layout({ children }) {
 }
 
 export default Layout;
-

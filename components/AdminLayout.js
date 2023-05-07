@@ -2,15 +2,12 @@ import Head from "next/head";
 import Footer from "./Footer";
 import styles from "@/styles/Page.module.css";
 import Header from "./Header";
-import { useRouter } from 'next/router'
-
-import React, { useState } from "react";
-import { useSession, signIn, signOut, SessionProvider } from "next-auth/react";
+import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 
 function AdminLayout({ children }) {
   const { data: session } = useSession();
-  const router = useRouter()
 
   return (
     <>
@@ -22,19 +19,25 @@ function AdminLayout({ children }) {
         <link rel="icon" href="/logo.png" />
       </Head>
 
-      <Header/>
+      <Header />
 
-      <div className={`container-fluid ${styles.background} `} style={{minHeight: "100%"}}>
-        <div className="row flex"  >
+      <div className={`container-fluid ${styles.background} `}>
+        <div className="row flex">
           <div
             // className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}
-            className={`py-3 pt-3 ${styles.main}` }  style={{minHeight: "100vh"}}    
+            className={`py-3 pt-3 ${styles.main}`}
           >
-            <div className="d-flex mx-7 pb-3" style={{alignItems: "center", justifyContent: "center"}}>
+            <div
+              className="d-flex mx-7 pb-3"
+              style={{ alignItems: "center", justifyContent: "center" }}
+            >
               <Link href={`/admin/home`} className="btn btn-success me-3 px-3">
                 Home
               </Link>
-              <Link href={`/admin/donations`} className="btn btn-success me-3 px-3">
+              <Link
+                href={`/admin/donations`}
+                className="btn btn-success me-3 px-3"
+              >
                 View Donations
               </Link>
               {session ? (
@@ -57,7 +60,6 @@ function AdminLayout({ children }) {
             </div>
 
             {children}
-            
           </div>
         </div>
       </div>
