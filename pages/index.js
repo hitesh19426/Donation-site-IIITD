@@ -13,8 +13,8 @@ function CategoryCard({ name, imageUrl, categoryId }) {
           src={imageUrl}
           className="card-img-top"
           alt="category pic"
-          width={500}
-          height={300}
+          width={300}
+          height={200}
         />
         <div className="card-body">
           <Link
@@ -31,7 +31,7 @@ function CategoryCard({ name, imageUrl, categoryId }) {
 
 export default function CategoryPage({ categories }) {
   return (
-    <div className="row row-cols-sm-1 rows-cols-lg-2 row-cols-xxl-4 g-4">
+    <div className="row row-cols-sm-1 rows-cols-md-2 row-cols-xxl-4 g-4">
       {categories.map((category) => (
         <CategoryCard
           key={category.id}
