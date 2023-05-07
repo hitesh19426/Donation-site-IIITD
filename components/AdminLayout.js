@@ -21,16 +21,13 @@ function AdminLayout({ children }) {
 
       <Header />
 
-      <div className={`container-fluid ${styles.background} `}>
-        <div className="row flex">
+      <div className={`container-fluid ${styles.background} `} style={{minHeight: "100%"}}>
+        <div className="row flex"  >
           <div
             // className={`col-sm-12 col-md-9 col-xl-9 py-3 pt-5 ${styles.main}`}
-            className={`py-3 pt-3 ${styles.main}`}
+            className={`py-3 pt-3 ${styles.main}` }  style={{minHeight: "85vh"}}    
           >
-            <div
-              className="d-flex mx-7 pb-3"
-              style={{ alignItems: "center", justifyContent: "center" }}
-            >
+            <div className="d-flex mx-7 pb-3" style={{alignItems: "center", justifyContent: "center"}}>
               <Link href={`/admin/home`} className="btn btn-success me-3 px-3">
                 Home
               </Link>

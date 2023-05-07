@@ -5,10 +5,18 @@ import AdminLayout from "@/components/AdminLayout";
 const AdminPage = ({}) => {
   return (
     <>
-      <section className=" py-3 pt-3 " style={{width: "100%", height: "400px", background: "white"}}>
+      
+      <section className=" py-3 pt-3 " style={{width: "100%", background: "white"}}>
         <div className="container-fluid pt-3">
-          <h1 style={{textAlign:"center", fontFamily: "sans", fontSize: "200px"}}>Welcome Admin</h1>
-        </div>    
+          <h1 style={{textAlign:"center", fontFamily: "sans", fontSize: "10vw"}}>Welcome Admin</h1>
+
+          <br></br>
+          <h1 style={{textAlign:"center", fontFamily: "sans", fontSize: "8vw", color: "#198754"}}>Here admin can update the categories!!</h1>
+
+          <br></br>
+          
+        </div>
+          
       </section>
     </>
   );

@@ -7,7 +7,7 @@ export default function Footer() {
       className="text-center text-lg-start text-dark mb-0"
       style={{
         backgroundColor: "#ECEFF1",
-        position: "relative",
+        position: "realtive",
         bottom: "0",
         width: "100%",
       }}
