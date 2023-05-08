@@ -13,7 +13,7 @@
 }
 
 
-@media (min-width: 768px) {
+@media (min-width: 1100px) {
   .sidebar {
     /* min-height: 10vh; */
     min-height: 85vh;

@@ -8,7 +8,7 @@ export default function Header() {
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
   return (
-    <nav className="navbar navbar-expand-md">
+    <nav className="navbar navbar-expand-md" >
       <div className="container-fluid ">
         <Link className="navbar-brand ps-2" href="/">
           <Image

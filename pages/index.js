@@ -8,7 +8,6 @@ import React, { useState } from 'react';
 
 import generatePDF from "@/utils/generatePDF";
 
-
 function CategoryCard({ name, imageUrl, categoryId }) {
   return (
     <div className="col pb-4">
@@ -68,8 +67,6 @@ export default function CategoryPage({ categories }) {
     link.click();
     document.body.removeChild(link);
   };
-
-
 
 
   return (
