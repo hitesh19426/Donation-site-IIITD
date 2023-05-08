@@ -15,9 +15,9 @@ const DonationItem = ({ index, donation }) => {
       <td> {donation.phone} </td>
       <td> {donation.amount} </td>
       <td> {donation.category} </td>
-      <td> {donation.razorpay_order_id} </td>
+      {/* <td> {donation.razorpay_order_id} </td> */}
       <td> {donation.razorpay_payment_id} </td>
-      <td> {donation.razorpay_signature} </td>
+      {/* <td> {donation.razorpay_signature} </td> */}
     </tr>
   );
 };
@@ -34,9 +34,9 @@ const ViewDonations = ({donations }) => {
             <th scope="col">Phone</th>
             <th scope="col">Amount</th>
             <th scope="col">Category </th>
-            <th scope="col">Razorpay Order Id</th>
+            {/* <th scope="col">Razorpay Order Id</th> */}
             <th scope="col">Razorpay Payment Id</th>
-            <th scope="col">Razorpay Signature </th>
+            {/* <th scope="col">Razorpay Signature </th> */}
           </tr>
         </thead>
         <tbody>

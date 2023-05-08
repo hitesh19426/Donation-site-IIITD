@@ -18,7 +18,8 @@ function Layout({ children }) {
 
       <div className={`container-fluid ${styles.background}`}>
         <div className="row flex" style={{ minHeight: "100%" }}>
-          <div className="col-sm-12 col-md-3 col-xl-3 pt-5 ps-3 ">
+          <div className={`col-sm-12 col-md-3 col-xl-3 pt-5 ps-3 ${styles.sidebar}`}
+           >
             <SideBar />
           </div>
           <div

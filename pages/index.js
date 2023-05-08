@@ -4,6 +4,11 @@ import styles from "@/styles/HoverCard.module.css";
 import dbConnect from "@/utils/dbConnect";
 import Category from "@/models/category";
 
+import React, { useState } from 'react';
+
+import generatePDF from "@/utils/generatePDF";
+
+
 function CategoryCard({ name, imageUrl, categoryId }) {
   return (
     <div className="col pb-4">
@@ -29,8 +34,49 @@ function CategoryCard({ name, imageUrl, categoryId }) {
   );
 }
 
+
+// const PDFButtonhandleClick = async () => {
+//   const pdfBytes = await generatePDF();
+//   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+//   const url = URL.createObjectURL(blob);
+//   const a = document.createElement('a');
+//   a.href = url;
+//   a.download = 'myPDF.pdf';
+//   a.click();
+//   URL.revokeObjectURL(url);
+// };
+
+
 export default function CategoryPage({ categories }) {
+  
+  
+  const [pdfData, setPdfData] = useState('');
+
+  async function handleGeneratePDF (){
+    const data = generatePDF();
+    setPdfData(data);
+  };
+
+  async function handleDownloadPDF () {
+
+    await handleGeneratePDF();
+
+    const link = document.createElement('a');
+    link.href = pdfData;
+    link.download = 'my-pdf-document.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+
+
+
   return (
+    <>
+
+    {/* <button onClick={handleDownloadPDF}>Download PDF</button>; */}
+
     <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
       {categories.map((category) => (
         <CategoryCard
@@ -41,6 +87,8 @@ export default function CategoryPage({ categories }) {
         />
       ))}
     </div>
+    </>
+
   );
 }
 

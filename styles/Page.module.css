@@ -6,3 +6,16 @@
 .main {
   background-color: #c6c6c7;
 }
+
+
+.sidebar{
+
+}
+
+
+@media (min-width: 768px) {
+  .sidebar {
+    /* min-height: 10vh; */
+    min-height: 85vh;
+  }
+}

@@ -1,10 +1,15 @@
 import Link from "next/link";
 import React from "react";
 
+import styles from "@/styles/Footer.module.css";
+
 export default function Footer() {
   return (
     <footer
-      className="text-center text-lg-start text-dark mb-0"
+      className={` text-center text-lg-start text-dark mb-0 ${styles.main}`} 
+
+      // styles = {{styles.main}}
+
       style={{
         backgroundColor: "#ECEFF1",
         position: "realtive",

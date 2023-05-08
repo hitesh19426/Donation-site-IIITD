@@ -1,0 +1,12 @@
+.main{
+
+}
+
+
+@media (min-width: 768px) {
+  .main {
+    /* min-height: 10vh; */
+    position: sticky;
+    padding-top: 20px;
+  }
+}
