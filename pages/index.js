@@ -49,30 +49,54 @@ function CategoryCard({ name, imageUrl, categoryId }) {
 export default function CategoryPage({ categories }) {
   
   
-  const [pdfData, setPdfData] = useState('');
+  // // const [pdfData, setPdfData] = useState('');
 
-  async function handleGeneratePDF (){
-    const data = generatePDF();
-    setPdfData(data);
-  };
+  // // async function handleGeneratePDF (){
+  // //   const data = generatePDF();
+  // //   setPdfData(data);
+  // // };
 
-  async function handleDownloadPDF () {
+  // // async function handleDownloadPDF () {
 
-    await handleGeneratePDF();
+  // //   await handleGeneratePDF();
 
-    const link = document.createElement('a');
-    link.href = pdfData;
-    link.download = 'my-pdf-document.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // //   const link = document.createElement('a');
+  // //   link.href = pdfData;
+  // //   link.download = 'my-pdf-document.pdf';
+  // //   document.body.appendChild(link);
+  // //   link.click();
+  // //   document.body.removeChild(link);
+  // // };
 
+  // const generatePDF = () => {
+  //   // Create a new jsPDF instance
+  //   const doc = new jsPDF('p', 'pt');
+  
+  //   console.log("In generatePDF")
+  
+  //   // Create a HTML element with the React component
+  //   const element = document.createElement('div');
+  //   element.innerHTML = '<html><body>' + ReactDOMServer.renderToString(<Receipt />) + '</body></html>';
+    
+  //   document.body.appendChild(element);
+
+  //   // Use html2canvas to convert the HTML element to a canvas
+  //   html2canvas(element).then((canvas) => {
+  //     // Convert the canvas to an image data URL
+  //     const dataURL = canvas.toDataURL('image/png');
+  
+  //     // Add the image to the PDF document
+  //     doc.addImage(dataURL, 'PNG', 10, 10, 180, 240);
+  
+  //     // Save the PDF document
+  //     doc.save('my-pdf-document.pdf');
+  //   });
+  // };
 
   return (
     <>
 
-    {/* <button onClick={handleDownloadPDF}>Download PDF</button>; */}
+    {/* <button onClick={generatePDF}>Download PDF</button> */}
 
     <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
       {categories.map((category) => (

@@ -24,7 +24,6 @@ const validator = (values) => {
   }
   return errors;
 };
-
 const AddCategoryPage = ({ }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
@@ -53,7 +52,7 @@ const AddCategoryPage = ({ }) => {
       push('/admin')
 
     }catch(err){
-      window.alert("Error occured" + err.message);
+      window.alert("Please check the mandatory feilds");
       // console.log("error occured: ", err);
     }
 
@@ -63,7 +62,7 @@ const AddCategoryPage = ({ }) => {
   const handleImage = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file)
-    // console.log(file);
+    console.log(file);
 
     const fileReader = new FileReader();
     fileReader.onload = (event) => {

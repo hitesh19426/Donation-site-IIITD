@@ -36,6 +36,6 @@ export default async function handler(req, res) {
       res.status(400).json(err);
     }
   } else {
-    // Handle any other HTTP method
+    res.status(405).message("Method Not Allowed");
   }
 }

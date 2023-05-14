@@ -1,7 +1,10 @@
 import dbConnect from "@/utils/dbConnect";
 import donation_data from "@/models/donation_data";
+import sendMail from "@/utils/mailer";
+import { redirect } from "next/dist/server/api-utils";
 
 dbConnect();
+
 
 const handler = async (req, res) => {
   const { method } = req;
@@ -27,8 +30,31 @@ const handler = async (req, res) => {
         razorpay_payment_id: req.body.razorpay_payment_id,
         razorpay_signature: req.body.razorpay_signature ? req.body.razorpay_signature : "",
         remarks: req.body.remarks ? req.body.remarks : "",
+        paymentDate: new Date()
       });
       await new_donation.save();
+      
+
+      const mailer_data = {
+        name: req.body.name,
+        email: req.body.email,
+        amount: req.body.amount,
+        razorpayOrderId: req.body.razorpay_payment_id,
+        category: req.body.category
+      }
+
+      console.log(mailer_data);
+
+      console.log(mailer_data.razorpay_payment_id);
+      if(mailer_data.razorpayOrderId? true: false){
+
+        console.log("Sending mail to api: " + mailer_data.email);
+
+        sendMail(mailer_data.email,mailer_data);
+      }
+
+
+    
       return res.status(201).json({ success: true, data: new_donation });
     } catch (error) {
       return res.status(400).json({ success: false, message: error.message });

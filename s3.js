@@ -43,3 +43,16 @@ export function GetFile(key){
 
 
 // export function GetFile(key){
+
+
+export function uploadPDF(file, filename){
+
+    const params = {
+        Bucket: bucketName,
+        Key: filename,
+        Body: file
+    };
+
+    return s3.upload(params).promise();
+
+};

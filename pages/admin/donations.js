@@ -5,6 +5,8 @@ import dbConnect from "@/utils/dbConnect";
 import DonationData from "@/models/donation_data";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import Link from "next/link";
+
 
 const DonationItem = ({ index, donation }) => {
   return (
@@ -18,9 +20,14 @@ const DonationItem = ({ index, donation }) => {
       {/* <td> {donation.razorpay_order_id} </td> */}
       <td> {donation.razorpay_payment_id} </td>
       {/* <td> {donation.razorpay_signature} </td> */}
+      <td> <button className="btn btn-success"> <Link href={`/admin/donation/receipt/${donation.id}`} className="btn btn-success" >
+            receipt </Link>
+           </button> 
+          </td>
     </tr>
   );
 };
+
 
 const ViewDonations = ({donations }) => {
   return (
@@ -36,7 +43,8 @@ const ViewDonations = ({donations }) => {
             <th scope="col">Category </th>
             {/* <th scope="col">Razorpay Order Id</th> */}
             <th scope="col">Razorpay Payment Id</th>
-            {/* <th scope="col">Razorpay Signature </th> */}
+            <th scope="col"> Receipt </th>
+
           </tr>
         </thead>
         <tbody>

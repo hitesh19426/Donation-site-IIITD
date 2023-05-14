@@ -61,6 +61,9 @@ const donationData = new mongoose.Schema({
   remarks: {
     type: String,
   },
+  paymentDate: {
+    type: Date
+  },
 });
 
 export default mongoose.models.DonationData ||

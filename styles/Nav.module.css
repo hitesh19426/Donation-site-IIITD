@@ -2,6 +2,15 @@
     
 }
 
+.menu :hover{
+    /* color: #9deea1; */
+    background-color: #b2f3bb;
+    /* border-radius: 5px;
+    padding: 5px; */
+    transition: 0.2s;
+    border-left: 2px solid rgb(0, 169, 156);
+}
+
 @media (max-width: 768px) {
   .menu {
     padding-bottom: 20px;

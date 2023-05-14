@@ -14,6 +14,15 @@ const CategoryItem = ({ id, category, setError }) => {
 
   const onDeleteHandler = async (id) => {
     // console.log("delete function clicked for category", id);
+
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
     try {
       setDeleting(true);
       setError(null);

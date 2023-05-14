@@ -6,6 +6,8 @@ import Image from "next/image";
 import Script from "next/script";
 import dbConnect from "@/utils/dbConnect";
 import Category from "@/models/category";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/router";
 
 function DetailCard({ name, imageUrl, description }) {
   return (
@@ -280,7 +282,24 @@ const MyForm = ({ name }) => {
       });
       const { data } = await response.json();
       // console.log(data);
+
+      if(response.status === 201){
+        alert("Donation done successfully, Thank you!");
+
+        // const router = useRouter();
+        // router.push("/");
+
+        //to home page in 2 seconds
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+      }else{
+        alert("Error occurred while payment contact admin, if your money has been deducted!");
+        console.log("error occurred: ", err);
+      }
+
     } catch (err) {
+      alert("Error occurred while submitting the form");
       console.log("error occurred: ", err);
     }
   };
