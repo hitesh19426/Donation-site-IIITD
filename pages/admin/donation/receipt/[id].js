@@ -3,6 +3,8 @@ import { SessionProvider } from "next-auth/react";
 import donation_data from '@/models/donation_data';
 // import imgl from '@/public/iiitdextendedlogo.png';
 import dbConnect from '@/utils/dbConnect';
+import Image from 'next/image';
+
 
 function Receipt(donationData) {
 
@@ -33,7 +35,7 @@ function Receipt(donationData) {
             <div style={{ marginBottom: "100px" }}>
 
                 <div>
-                    <img src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
+                    <Image src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
                         position: 'absolute',
                         top: '2px',
                         left: '2px',

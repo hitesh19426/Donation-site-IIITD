@@ -1,4 +1,6 @@
 import React from 'react';
+import Image from 'next/image';
+
 
 function Receipt() {
 
@@ -9,11 +11,17 @@ function Receipt() {
       <div style={{ marginBottom: "100px" }}>
 
         <div>
-          <img src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
+          <Image src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
             position: 'absolute',
             top: '2px',
             left: '2px',
           }} />
+
+          {/* <img src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
+            position: 'absolute',
+            top: '2px',
+            left: '2px',
+          }} /> */}
         </div>
 
         <div>
