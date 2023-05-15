@@ -16,6 +16,10 @@ module.exports = {
       {
         protocol: "https",
         hostname: "my-fundingapplication-uss.s3.ap-south-1.amazonaws.com"
+      },
+      {
+        protocol: "https",
+        hostname: "iiitd.ac.in"
       }
     ],
   },

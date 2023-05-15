@@ -4,14 +4,14 @@ import Image from 'next/image';
 
 function Receipt() {
 
-  
+
   return (
     <div style={{ margin: "10px" }}>
 
       <div style={{ marginBottom: "100px" }}>
 
         <div>
-          <Image src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" style={{
+          <Image src="https://iiitd.ac.in/sites/default/files/style3colorsmall.png" alt="IIITD Logo" width="400" height="100" style={{
             position: 'absolute',
             top: '2px',
             left: '2px',
