@@ -38,7 +38,7 @@ function Receipt(donationData) {
                             fontStyle: 'normal',
 
                         }}>
-                            IIIT-Delhi's Donation Receipt  </h5>
+                            IIIT-Delhi&#39;s Donation Receipt  </h5>
                     </div>
 
                 </div>
