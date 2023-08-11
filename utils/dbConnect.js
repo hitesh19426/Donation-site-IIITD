@@ -11,7 +11,8 @@ async function dbConnect() {
     // Use new database connection
     const db = await mongoose.connect(process.env.MONGODB_URI,{
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        dbName: "donationsite"
     });
     mongoose.set('strictQuery', true);
     connection.isConnected = db.connections[0].readyState;

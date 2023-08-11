@@ -382,7 +382,7 @@ const MyForm = ({ name }) => {
               placeholder="New Delhi"
             />
 
-            <MySelectInput label="Person Type" name="persontype">
+            <MySelectInput label="Relation With IIITD" name="persontype">
               <option value="">Select your designation: </option>
               <option value="student">Student</option>
               <option value="alumni">Alumni</option>
